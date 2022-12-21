@@ -4,7 +4,7 @@ module.exports = {
   create: async (req, res) => {
     try {
       var data = { ...req.body };
-      console.log(data);
+      // console.log(data);
       OrderService.create(data).then((result) => {
         if (result) {
           res.json({
@@ -27,10 +27,10 @@ module.exports = {
     }
   },
   find_all: (req, res, next) => {
-    console.log("category hit")
+    // console.log("category hit")
     try {
       OrderService.find_all().then((result) => {
-        console.log(result);
+        // console.log(result);
         if (result) {
           res.status(200).json({
             data: result,
@@ -53,10 +53,10 @@ module.exports = {
   },
   find_by_id: (req, res, next) => {
     const { userid } = req.body;
-    console.log(req.body)
+    // console.log(req.body)
     try {
       OrderService.find_by_id(userid).then((result) => {
-        console.log(result);
+        // console.log(result);
         if (result.length > 0) {
           res.status(200).json({
             data: result,
@@ -79,10 +79,10 @@ module.exports = {
   },
   updateOrder:(req, res, next) => {
     const { _id,status,justification,delivery_time} = req.body;
-    console.log(req.body)
+    // console.log(req.body)
     try {
       OrderService.updateOrder(_id,status,justification,delivery_time).then((result) => {
-        console.log(result);
+        // console.log(result);
         if (result.length > 0) {
           res.status(200).json({
             data: result,
@@ -105,7 +105,7 @@ module.exports = {
   },
   find_and_delete:(req,res)=>{
     const {_id} = req.body
-    console.log(_id,"here")
+    // console.log(_id,"here")
     try{  
       OrderService.find_and_delete(_id).then((result) => {      
           if (result.length>0) {  

@@ -8,41 +8,34 @@ const ProductSchema = new Schema({
   },
   description: {
     type: String,
-   },
-  image:{
-    type:Array
+  },
+  image: {
+    type: Array,
   },
   featuredImage: {
     type: Array,
-   },
-  category: {type:Schema.Types.ObjectId,
-    ref:"Category"
   },
-  storage:{
-    type:String
+  category: { type: Schema.Types.ObjectId, ref: "Category" },
+  storage: {
+    type: String,
   },
-  type:{
-    type:String
+  type: {
+    type: String,
   },
-  inrMrp:{
-    type:String
+  inrMrp: {
+    type: String,
   },
-  dollerMrp:{
-    type:String
+  dollerMrp: {
+    type: String,
   },
-  inrDiscount:{
-    type:String
+  inrDiscount: {
+    type: String,
   },
-  dollerDiscount:{
-    type:String
+  dollerDiscount: {
+    type: String,
   },
-  manufacturer:{type:Schema.Types.ObjectId,
-    ref:"manufacturer"
-  },
-  subcategory:{type:Schema.Types.ObjectId,
-    ref:"SubCategory"
-    
-  }
+  manufacturer: { type: Schema.Types.ObjectId, ref: "manufacturer" },
+  subcategory: { type: Schema.Types.ObjectId, ref: "SubCategory" },
 });
 const model = mongoose.model("Product", ProductSchema);
 module.exports = model;

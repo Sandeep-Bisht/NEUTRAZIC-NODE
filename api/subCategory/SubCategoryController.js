@@ -2,10 +2,10 @@ const SubCategoryService = require("./SubCategoryService");
 //end code for images
 module.exports = {
   create: async (req, res) => {
-    console.log(req.files)
+    // console.log(req.files)
     try {
       var data = { ...req.body,image:req.files };
-      console.log(data);
+      // console.log(data);
       SubCategoryService.create(data).then((result) => {
         if (result) {
           res.json({
@@ -28,10 +28,10 @@ module.exports = {
     }
   },
   find_all: (req, res, next) => {
-    console.log("subcategory hit")
+    // console.log("subcategory hit")
     try {
       SubCategoryService.find_all().then((result) => {
-        console.log(result);
+        // console.log(result, "hit by sandy");
         if (result) {
           res.status(200).json({
             data: result,
@@ -56,7 +56,7 @@ module.exports = {
     const { _id } = req.body;
     try {
       SubCategoryService.find_by_id(_id).then((result) => {
-        console.log(result);
+        // console.log(result);
         if (result.length > 0) {
           res.status(200).json({
             data: result,
@@ -106,7 +106,7 @@ module.exports = {
     },
     find_and_delete:(req,res)=>{
       const {_id} = req.body
-      console.log(_id,"here")
+      // console.log(_id,"here")
       try{  
         SubCategoryService.find_and_delete(_id).then((result) => {      
             if (result.length>0) {  

@@ -2,10 +2,10 @@ const CategoryService = require("./CategoryService");
 //end code for images
 module.exports = {
   create: async (req, res) => {
-    
+    //  console.log("catigory hit by sanjuuuuuu")
     try {
       var data = { ...req.body,image:req.files };
-      console.log(data);
+      // console.log(data, "hit by sanju");
       CategoryService.create(data).then((result) => {
         if (result) {
           res.json({
@@ -28,10 +28,10 @@ module.exports = {
     }
   },
   find_all: (req, res, next) => {
-    console.log("category hit")
+    //  console.log("catigory hit by sanjuuuuuu")
     try {
       CategoryService.find_all().then((result) => {
-        console.log(result);
+        //  console.log(result, "catigory hit by sanjuuuuuu")
         if (result) {
           res.status(200).json({
             data: result,
@@ -56,7 +56,7 @@ module.exports = {
     const { _id } = req.body;
     try {
       CategoryService.find_by_id(_id).then((result) => {
-        console.log(result);
+        // console.log(result);
         if (result.length > 0) {
           res.status(200).json({
             data: result,
@@ -114,7 +114,7 @@ module.exports = {
     },
     find_and_delete:(req,res)=>{
       const {_id} = req.body
-      console.log(_id,"here")
+      // console.log(_id,"here")
       try{  
         CategoryService.find_and_delete(_id).then((result) => {      
             if (result.length>0) {  

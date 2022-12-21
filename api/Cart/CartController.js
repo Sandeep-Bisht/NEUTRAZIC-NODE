@@ -3,7 +3,7 @@ module.exports = {
   create: (req, res) => {
         try {
           var data = {...req.body};  
-          console.log(data)       
+          // console.log(data)       
           CartService.create(data).then((result) => {
             if (result) {
               res.json({
@@ -26,9 +26,12 @@ module.exports = {
         }
   },  
   find_by_id:(req,res,next) =>{
+    // console.log("cart item by sanju")
     const{userid}=req.body
-    try {            
+    try {           
+       
       CartService.find_by_id(userid).then((result) => {
+        // console.log("result from cart", result)
         if (result.length>0) {  
           res.status(200).json({
             data: result,
@@ -52,7 +55,7 @@ module.exports = {
   },
   find_and_update:(req,res,next)=>{
   const{_id,userid,order}=req.body
-  console.log(order,_id,userid,"bshkdhkdvfh")
+  // console.log(order,_id,userid,"bshkdhkdvfh")
   try{  
   CartService.find_and_update(_id,userid,order).then((result) => {      
       if (result.length>0) {  
@@ -79,7 +82,7 @@ module.exports = {
   },
   find_and_delete:(req,res)=>{
     const {_id} = req.body
-    console.log(_id,"here")
+    // console.log(_id,"here")
     try{  
       CartService.find_and_delete(_id).then((result) => {      
           if (result.length>0) {  
