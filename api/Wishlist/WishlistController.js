@@ -3,7 +3,7 @@ module.exports = {
   create: (req, res) => {
         try {
           var data = {...req.body};  
-          console.log(data)       
+          // console.log(data)       
           WishlistService.create(data).then((result) => {
             if (result) {
               res.json({
@@ -28,7 +28,7 @@ module.exports = {
   },  
   find_by_id:(req,res,next) =>{
     const{userid}=req.body
-    console.log(userid)
+    // console.log(userid)
     try {            
       WishlistService.find_by_id(userid).then((result) => {
         if (result.length>0) {  
@@ -54,7 +54,7 @@ module.exports = {
   },
   find_and_update:(req,res,next)=>{
   const{_id,userid,order}=req.body
-  console.log(order,_id,userid,"bshkdhkdvfh")
+  // console.log(order,_id,userid,"bshkdhkdvfh")
   try{  
   WishlistService.find_and_update(_id,userid,order).then((result) => {      
       if (result.length>0) {  
@@ -81,7 +81,7 @@ module.exports = {
   },
   find_and_delete:(req,res)=>{
     const {_id} = req.body
-    console.log(_id,"here")
+    // console.log(_id,"here")
     try{  
       WishlistService.find_and_delete(_id).then((result) => {      
           if (result.length>0) {  
