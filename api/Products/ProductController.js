@@ -3,10 +3,10 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 module.exports = {
   create: (req, res) => {
-     console.log("product details sanju",req.file);
+     console.log("product details sanju",req.body.image, req.body, req.files);
         try {
           var data = {...req.body,image:req.files}; 
-          console.log("data by sanju", data)        
+          // console.log("data by sanju", data)        
           ProductService.create(data).then((result) => {
             if (result) {
               res.json({
