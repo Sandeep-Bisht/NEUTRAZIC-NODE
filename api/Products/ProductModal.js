@@ -12,9 +12,9 @@ const ProductSchema = new Schema({
   image: {
     type: Array,
   },
-  featuredImage: {
-    type: Array,
-  },
+  // featuredImage: {
+  //   type: Array,
+  // },
   category: { type: Schema.Types.ObjectId, ref: "Category" },
   storage: {
     type: String,
