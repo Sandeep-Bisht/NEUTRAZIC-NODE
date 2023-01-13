@@ -114,7 +114,7 @@ module.exports = {
     },
     find_and_delete:(req,res)=>{
       const {_id} = req.body
-      // console.log(_id,"here")
+       console.log(_id,"here")
       try{  
         CategoryService.find_and_delete(_id).then((result) => {      
             if (result.length>0) {  
