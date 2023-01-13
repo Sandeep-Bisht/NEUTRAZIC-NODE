@@ -11,12 +11,12 @@
     "type": "git",
     "url": "git+https://github.com/sumitsharma7667/NutraNode.git"
   },
-  "author": "sumit sharma <sumitsharma7667@gmail.com>",
+  "author": "Sandeep <sandeepbisht29@gmail.com>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/sumitsharma7667/NutraNode/issues"
   },
-  "homepage": "https://github.com/sumitsharma7667/NutraNode#readme",
+  "homepage": "https://github.com/Sanju-Bisht/NutraNode#readme",
   "dependencies": {
     "bcrypt": "^5.0.1",
     "body-parser": "^1.19.0",
