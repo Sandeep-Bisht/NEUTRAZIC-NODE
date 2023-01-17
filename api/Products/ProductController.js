@@ -3,19 +3,17 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 module.exports = {
   create: (req, res) => {
-     console.log("product details sanju",req.body.image, req.body, req.files);
         try {
-          var data = {...req.body,image:req.files}; 
-          // console.log("data by sanju", data)        
+          var data = {...req.body,image:req.files};      
           ProductService.create(data).then((result) => {
             if (result) {
-              res.json({
-                sucess: 200,
+               res.status(200).json({
+                data: 'ff',
                 message: "Product Created succefully",
               });
             } else {
-              res.json({
-                sucess: 400,
+               res.json({
+                success: 400,
                 message: "Please provide correct information",
               });
             }
@@ -23,7 +21,7 @@ module.exports = {
         } catch (err) {
           console.log(err);
           res.json({
-            sucess: 400,
+            success: 400,
             message: "Please provide correct information",
           });
         }
@@ -40,7 +38,7 @@ module.exports = {
                
         } else {
           res.json({
-            sucess: 400,
+            success: 400,
             message: "Data Not Found",
           });
         }
@@ -48,7 +46,7 @@ module.exports = {
     } catch (err) {
       console.log(err);
       res.json({
-        sucess: 400,
+        success: 400,
         message: "Please provide correct information",
       });
     }
@@ -74,7 +72,7 @@ module.exports = {
     } catch (err) {
       console.log(err);
       res.json({
-        sucess: 400,
+        success: 400,
         message: "Please provide correct information",
       });
     }
@@ -102,7 +100,7 @@ module.exports = {
      catch (err) {
         console.log(err);
         res.json({
-          sucess: 400,
+          success: 400,
           message: "Please provide correct information",
         });
       }
@@ -129,7 +127,7 @@ module.exports = {
        catch (err) {
           console.log(err);
           res.json({
-            sucess: 400,
+            success: 400,
             message: "Please provide correct information",
           });
         }     
