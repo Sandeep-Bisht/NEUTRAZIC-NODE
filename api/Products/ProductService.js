@@ -1,6 +1,6 @@
 const ProductModal =require('./ProductModal');
 module.exports={
-create:(data)=>{
+create:(data)=>{    
     return ProductModal.create(data)
 },
 find_all:()=>{
