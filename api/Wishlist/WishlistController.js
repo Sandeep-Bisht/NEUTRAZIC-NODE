@@ -3,7 +3,7 @@ module.exports = {
   create: (req, res) => {
         try {
           var data = {...req.body};  
-          // console.log(data)       
+          // console.log(data,"by sanju")       
           WishlistService.create(data).then((result) => {
             if (result) {
               res.json({
