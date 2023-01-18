@@ -15,5 +15,13 @@ var storage = multer.diskStorage({
     cb(null, Date.now() + file.originalname);
   },
 });
-var upload = multer({ storage: storage });
+const fileFilter = function (req, file, cb) {
+  if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
+    cb(null, true);
+  } else {
+    cb(null, false);
+  }
+};
+
+var upload = multer({ storage: storage, fileFilter: fileFilter });
 module.exports = upload;
