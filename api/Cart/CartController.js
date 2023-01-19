@@ -55,11 +55,12 @@ module.exports = {
   },
   find_and_update:(req,res,next)=>{
   const{_id,userid,order}=req.body
-  // console.log(order,_id,userid,"bshkdhkdvfh")
   try{  
-  CartService.find_and_update(_id,userid,order).then((result) => {      
-      if (result.length>0) {  
-        res.status(200).json({
+  CartService.find_and_update(_id,userid,order).then((result) => { 
+    console.log("result",result,"result")     
+      if (result.order.length>0) {
+        console.log(res, "inside resuklt")  
+        res.status(200).json({          
           data: result,
           msg:'data found'
         });
