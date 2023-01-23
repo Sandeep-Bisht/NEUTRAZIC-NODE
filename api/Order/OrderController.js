@@ -1,30 +1,63 @@
 const OrderService = require("./OrderService");
+const Stripe = require('stripe');
+require('dotenv').config()
+
+const stripe = Stripe(process.env.STRIPE_KEY)
 //end code for images
 module.exports = {
+
   create: async (req, res) => {
-    try {
-      var data = { ...req.body };
-      // console.log(data);
-      OrderService.create(data).then((result) => {
-        if (result) {
-          res.json({
-            sucess: 200,
-            message: "Ordered succefully",
-          });
-        } else {
-          res.json({
-            sucess: 400,
-            message: "Please provide correct information",
-          });
-        }
-      });
-    } catch (err) {
-      console.log(err);
-      res.json({
-        sucess: 400,
-        message: "Please provide correct information",
-      });
-    }
+    const {order} = req.body;
+    
+    let productArray = [];
+    
+    JSON.parse(order).map((item) => {
+      console.log(item.image,"item.image")
+      productArray.push({
+        price_data:{
+          currency:'inr',
+          product_data:{
+            name:item.name,
+            images: [`http://arogyapath.org/_next/image?url=%2Fimages%2FAyurveda-Book.png&w=64&q=75`]
+          },
+          unit_amount:parseInt(item.singleprice*100),
+        },
+        quantity:item.quantity,
+      })
+    })
+
+
+    const session = await stripe.checkout.sessions.create({
+      line_items: productArray,
+      mode: 'payment',
+      success_url: `${process.env.CLIENT_URL}/Success`,
+      cancel_url: `${process.env.CLIENT_URL}/cart`,
+    });
+  
+    res.send({url: session.url});
+    // try {
+    //   var data = { ...req.body };
+    //   // console.log(data);
+    //   OrderService.create(data).then((result) => {
+    //     if (result) {
+    //       res.json({
+    //         sucess: 200,
+    //         message: "Ordered succefully",
+    //       });
+    //     } else {
+    //       res.json({
+    //         sucess: 400,
+    //         message: "Please provide correct information",
+    //       });
+    //     }
+    //   });
+    // } catch (err) {
+    //   console.log(err);
+    //   res.json({
+    //     sucess: 400,
+    //     message: "Please provide correct information",
+    //   });
+    // }
   },
   find_all: (req, res, next) => {
     // console.log("category hit")

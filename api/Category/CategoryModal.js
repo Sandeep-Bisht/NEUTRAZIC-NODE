@@ -12,6 +12,9 @@ const CategorySchema = new Schema({
    description:{
     type: String,  
    },
+   featuredCategories : {
+    type: String,
+   },
    featuredImage: {
     type: Array,
    },

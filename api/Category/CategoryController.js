@@ -10,7 +10,7 @@ module.exports = {
         if (result) {
           res.json({
             sucess: 200,
-            message: "User Loged in succefully",
+            message: "Category created succefully",
           });
         } else {
           res.json({
