@@ -17,6 +17,7 @@ module.exports = {
             username: req.body.username,
             password: hash,
             email: req.body.email,
+            phonenumber:req.boby.phonenumber,
             role:req.body.role,
             organization:req.body.organization
           };
@@ -24,7 +25,7 @@ module.exports = {
             if (result) {              
               res.json({
                 sucess: 200,
-                message: "User Loged in succefully",
+                message: "User Created succefully",
               });
             } else {
               res.json({

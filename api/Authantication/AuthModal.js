@@ -4,12 +4,16 @@ const LoginSchema = new Schema({
   username: {
     required: true,
     type: String,
-    unique: true,
+    
   },
   email: {
     required: true,
     type: String,
     unique: true,
+  },
+  phonenumber: {
+    required: true,
+    type : String,
   },
   password: {
     required: true,
