@@ -5,16 +5,15 @@ module.exports = {
     // console.log(req.files)
     try {
       var data = { ...req.body,image:req.files };
-      // console.log(data);
       ManufacturerService.create(data).then((result) => {
-        if (result) {
-          res.json({
-            sucess: 200,
-            message: "User Loged in succefully",
+        if (result.image.length > 0) {
+          res.send({
+            success: 200,
+            message: "Manufacturer created succefully",
           });
         } else {
-          res.json({
-            sucess: 400,
+          res.send({
+            success: 400,
             message: "Please provide correct information",
           });
         }
@@ -22,7 +21,7 @@ module.exports = {
     } catch (err) {
       console.log(err);
       res.json({
-        sucess: 400,
+        success: 400,
         message: "Please provide correct information",
       });
     }
