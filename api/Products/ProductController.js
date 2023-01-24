@@ -4,9 +4,7 @@ const jwt = require("jsonwebtoken");
 module.exports = {
   create: (req, res) => {
         try {
-          console.log("dataaaa", req.body)
           var data = {...req.body,image:req.files.image, otherImage:req.files.otherImage};      
-          console.log("dataaaa", data)
           ProductService.create(data).then((result) => {
             if (result) {
                res.status(200).json({

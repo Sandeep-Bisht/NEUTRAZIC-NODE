@@ -6,13 +6,13 @@ module.exports = {
     try {
       var data = { ...req.body,image:req.files };
       ManufacturerService.create(data).then((result) => {
-        if (result.image.length > 0) {
-          res.send({
+        if (result) {
+          res.status(200).json({
             success: 200,
             message: "Manufacturer created succefully",
           });
         } else {
-          res.send({
+          res.json({
             success: 400,
             message: "Please provide correct information",
           });
@@ -38,7 +38,7 @@ module.exports = {
           });
         } else {
           res.json({
-            sucess: 400,
+            success: 400,
             message: "Data Not Found",
           });
         }

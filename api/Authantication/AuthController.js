@@ -118,5 +118,88 @@ module.exports = {
         message: "Please provide correct information",
       });
     }
+  },
+
+  find_by_id:(req,res,next) =>{
+    const{_id}=req.body
+    try {            
+      AuthService.find_by_id(_id).then((result) => {
+        console.log(result)
+        if (result) {  
+          res.status(200).json({
+            success : 200,
+            data: result,
+            msg:'User found'
+          });
+               
+        } else {
+          res.json({
+            error: 400,
+            message: "Data Not Found",
+          });
+        }
+      });
+    } catch (err) {
+      console.log(err);
+      res.json({
+        success: 400,
+        message: "Please provide correct information",
+      });
+    }
+  },
+
+  find_and_update : (req,res) => {
+    const {_id} = req.body
+   try{
+    AuthService.find_and_update(_id,req.body).then((result) => {
+      if (result.length > 0) {
+        res.status(200).json({
+          success: 200,
+          msg:"User Updated"
+        })
+      }else {
+        res.json({
+          success : 400,
+          msg : 'Data not found'
+        })
+      }
+    })
+
+   }catch (err){
+      console.log(err, "err")
+      res.json({
+      success: 400,
+      message: "Please provide correct information",
+      })
+   }
+  },
+
+  find_and_delete:(req,res)=>{
+    const {_id} = req.body
+    try{  
+      AuthService.find_and_delete(_id).then((result) => {   
+          if (result) {  
+            res.status(200).json({
+              data: result,
+              msg:'User deleted'
+            });
+                 
+          } else {
+            res.json({
+              error: 400,
+              message: "User Not Found",
+            });
+          }
+        })
+      }
+       catch (err) {
+          console.log(err);
+          res.json({
+            success: 400,
+            message: "Please provide correct information",
+          });
+        }     
   }
 };
+
+
