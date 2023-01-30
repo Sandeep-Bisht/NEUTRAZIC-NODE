@@ -15,7 +15,10 @@ const ProductSchema = new Schema({
   otherImage: {
     type: Array,
   },
-  category: { type: Schema.Types.ObjectId, ref: "Category" },
+  category: { 
+    type: Schema.Types.ObjectId, 
+    ref: "Category" 
+  },
   storage: {
     type: String,
   },
