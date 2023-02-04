@@ -78,23 +78,13 @@ module.exports = {
     }
   },
   find_and_update:(req,res,next)=>{
-    // console.log(req.body,"kh")
       const {_id} =req.body;
-      console.log(_id,"idddddddddd")
-      var images;
-      var otherImages;
-      if(req.files.image)
-      {
-        images=req.files.image;
-      }
-      if(req.files.otherImage)
-      {
-        otherImages=req.files.otherImage;
-      }
-      const data={...req.body,image:images,otherImage:otherImages}
+      console.log(req.body, "bodyyyyyy")
+     
+   
+      const data={...req.body,image:req.files.image, otherImage:req.files.otherImage}
     try{  
       ProductService.find_and_update(_id,data).then((result) => {      
-        // console.log(result)
         if (result) {  
           res.status(200).json({
             data: result,
