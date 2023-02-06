@@ -10,6 +10,7 @@ const CategoryRouter=require('./api/Category/CategoryRouting')
 const ManufactureRouter=require('./api/Manufacturer/manufacturerRouting')
 const OrderRouter=require('./api/Order/OrderRouting')
 const WishlistRouter=require('./api/Wishlist/WishlistRouting')
+
 const cors = require('cors');
 require('dotenv').config()
 app.use(bodyParser.json());
@@ -26,6 +27,8 @@ app.use('/api/order',OrderRouter);
 app.use('/api/wishlist',WishlistRouter);
 db();
 app.use(express.json())
+
+
 app.listen(process.env.PORT,()=>{
 console.log('server is runnig on port number '+process.env.PORT)
 })
