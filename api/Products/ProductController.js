@@ -56,7 +56,7 @@ module.exports = {
     try {            
       ProductService.find_by_id(_id).then((result) => {
         // console.log(result)
-        if (result.length>0) {  
+        if (result) {  
           res.status(200).json({
             data: result,
             msg:'data found'
@@ -78,12 +78,14 @@ module.exports = {
     }
   },
   find_and_update:(req,res,next)=>{
-    // console.log(req.body,"kh")
-      const {_id} =req.body
+      const {_id} =req.body;
+      console.log(req.body, "bodyyyyyy")
+     
+   
+      const data={...req.body,image:req.files.image, otherImage:req.files.otherImage}
     try{  
-      ProductService.find_and_update(_id,req.body).then((result) => {      
-        // console.log(result)
-        if (result.length>0) {  
+      ProductService.find_and_update(_id,data).then((result) => {      
+        if (result) {  
           res.status(200).json({
             data: result,
             msg:'data found'

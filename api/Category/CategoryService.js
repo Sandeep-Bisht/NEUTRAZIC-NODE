@@ -12,7 +12,7 @@ find_all:()=>{
 find_and_update:(_id,data)=>{
     return CategoryModal.findOneAndUpdate({_id},data)
     },
-    find_and_delete:(_id)=>{
+find_and_delete:(_id)=>{
         return CategoryModal.findByIdAndRemove({_id})
     }
 }

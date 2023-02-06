@@ -77,11 +77,19 @@ module.exports = {
     }
   },
   find_and_update:(req,res,next)=>{
-    const{_id}=req.body
-    // console.log(_id,userid,"bshkdhkdvfh")
+    const{_id}=req.body;
+    var images   
+    if(req.files[0]){
+      images = req.files    
+    }
+    else{
+      images = req.body.image
+    }
+
+    const data={...req.body,image:images} 
     try{  
-      ManufacturerService.find_and_update(_id,req.body).then((result) => {      
-        if (result.length>0) {  
+      ManufacturerService.find_and_update(_id,data).then((result) => {      
+        if (result) {  
           res.status(200).json({
             data: result,
             msg:'data found'
