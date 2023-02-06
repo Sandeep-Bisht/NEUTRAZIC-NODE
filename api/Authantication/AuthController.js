@@ -17,7 +17,7 @@ module.exports = {
             username: req.body.username,
             password: hash,
             email: req.body.email,
-            phonenumber:req.boby.phonenumber,
+            phonenumber:req.body.phonenumber,
             role:req.body.role,
             organization:req.body.organization
           };
@@ -52,7 +52,7 @@ module.exports = {
       // console.log(req.body);
       AuthService.isuser(data).then((result) => {
         // console.log(result, 'resulttt')
-        if (result.length > 0) {          
+        if (result) {          
           bcrypt.compare(
             req.body.password,
             result[0].password,
@@ -149,10 +149,11 @@ module.exports = {
   },
 
   find_and_update : (req,res) => {
-    const {_id} = req.body
+    const {_id} = req.body;
+    console.log(req.body,"helo body");
    try{
     AuthService.find_and_update(_id,req.body).then((result) => {
-      if (result.length > 0) {
+      if (result) {
         res.status(200).json({
           success: 200,
           msg:"User Updated"
