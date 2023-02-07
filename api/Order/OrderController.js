@@ -1,4 +1,5 @@
 const OrderService = require("./OrderService");
+const CartService = require("../Cart/CartService");
 require("dotenv").config();
 const router = require("express").Router();
 const express = require("express");
@@ -9,7 +10,8 @@ const stripe = Stripe(process.env.STRIPE_KEY);
 module.exports = {
   create: async (req, res) => {
     const { order } = req.body;
-    // console.log("inside cretae ",req.body)
+    console.log("inside cretae ",req.body)
+    debugger;
     const customer = await stripe.customers.create({
       metadata: {
         userid: req.body.userid,
@@ -126,7 +128,9 @@ module.exports = {
         .then((customer) => {
           // console.log(customer, "customer");
           // console.log("data ", data);
+        
           createOrder(customer, data);
+
         })
         .catch((err) => console.log(err.message));
     }
@@ -264,7 +268,27 @@ const createOrder = async (customer, data) => {
     order_no: customer.metadata.order_no,
   };
 
-  console.log("itemsssssssssssss", newOrder);
+  try {        
+       
+    CartService.find_by_id(newOrder.userid).then((result) => {
+      console.log("result from cart", result)
+      if (result && result.cartStatus == "Open") { 
+        let {_id, userid, order, cartStatus} = result; 
+        cartStatus = "Closed"
+        try{  
+          CartService.find_and_update(_id,userid,order,cartStatus).then((result) => {})
+          }
+           catch (err) {
+              console.log(err);
+              
+            }
+             
+      } 
+    });
+  } catch (err) {
+    console.log(err);   
+  }
+
 
   try {
       OrderService.create(newOrder);    
