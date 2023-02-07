@@ -10,20 +10,20 @@ const OrderSchema = new Schema({
         required:true
     },
     address:{
-        type:String,        
+        type:Object, required:true        
     }, 
     mobile:{
-        type:String
-    },
-    othermobile:{
-    type:String
-    },
-    orderfor:{
-    type:String
-    },
+        type:String, required:true
+    }, 
     status:{
     type:String,        
     }, 
+    transaction_id:{
+        type:String, required:true
+    },
+    payment_status:{
+    type:String, required:true
+    },
     justification:{
     type:String,        
     },   
@@ -48,11 +48,14 @@ const OrderSchema = new Schema({
     username:{
     type:String
     },
+    userEmail:{
+        type : String,
+    },
     order_no:{
     type:String,
     unique:true,
     required:true,    
     },
-});
+}, {timestamps : true});
 const model = mongoose.model("Order", OrderSchema);
 module.exports = model;
