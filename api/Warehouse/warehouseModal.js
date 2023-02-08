@@ -6,9 +6,6 @@ const warehouseSchema = new Schema({
         type: String,
         unique: true,
     },
-    image: {
-        type: Array,
-    },
     description:{
         type:String
     }
