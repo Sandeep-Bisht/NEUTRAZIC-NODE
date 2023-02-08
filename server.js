@@ -10,6 +10,7 @@ const CategoryRouter=require('./api/Category/CategoryRouting')
 const ManufactureRouter=require('./api/Manufacturer/manufacturerRouting')
 const OrderRouter=require('./api/Order/OrderRouting')
 const WishlistRouter=require('./api/Wishlist/WishlistRouting')
+const WarehouseRouter = require('./api/Warehouse/warehouseRouting')
 
 const cors = require('cors');
 require('dotenv').config()
@@ -25,6 +26,7 @@ app.use('/api/subcategory',SubCategoryRouter);
 app.use('/api/manufacture',ManufactureRouter);
 app.use('/api/order',OrderRouter);
 app.use('/api/wishlist',WishlistRouter);
+app.use('/api/warehouse',WarehouseRouter);
 db();
 app.use(express.json())
 
