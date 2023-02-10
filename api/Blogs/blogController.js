@@ -95,7 +95,7 @@ module.exports = {
                    
             } else {
               res.json({
-                error: 400,
+                error: 200,
                 message: "Data Not Found",
               });
             }

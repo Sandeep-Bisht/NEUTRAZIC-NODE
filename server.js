@@ -11,6 +11,7 @@ const ManufactureRouter=require('./api/Manufacturer/manufacturerRouting')
 const OrderRouter=require('./api/Order/OrderRouting')
 const WishlistRouter=require('./api/Wishlist/WishlistRouting')
 const WarehouseRouter = require('./api/Warehouse/warehouseRouting')
+const BlogsRouter = require('./api/Blogs/blogRouting')
 
 const cors = require('cors');
 require('dotenv').config()
@@ -27,6 +28,7 @@ app.use('/api/manufacture',ManufactureRouter);
 app.use('/api/order',OrderRouter);
 app.use('/api/wishlist',WishlistRouter);
 app.use('/api/warehouse',WarehouseRouter);
+app.use('/api/blogs',BlogsRouter)
 db();
 app.use(express.json())
 
