@@ -1,6 +1,7 @@
 const blogService = require('./blogService')
 module.exports = {
     create : async(req,res) => {
+      console.log("inside create", req.body,"files", req.files)
         try {
             var data = {...req.body, image:req.files }
             blogService.create(data).then((result) => {
