@@ -1,4 +1,4 @@
-const blogModel = require("./warehouseModal");
+const blogModel = require("./blogModel");
 module.exports={
     create:(data)=>{
         return blogModel.create(data)

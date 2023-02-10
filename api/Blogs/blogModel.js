@@ -14,15 +14,14 @@ const blogSchema = new Schema({
         required : true,
         type: String
     },
-    featuredImage : {
-        required: true,
+    featuredImage: {
         type: Array
     },
     content: {
         required: true,
         type : String
     }
-}, {timestamps : true })
+})
 
 const model = mongoose.model("blogs", blogSchema)
 module.exports = model;
