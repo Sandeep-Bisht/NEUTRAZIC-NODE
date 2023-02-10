@@ -268,7 +268,7 @@ const createOrder = async (customer, data) => {
     order_no: customer.metadata.order_no,
   };
 
-  try {        
+  try {      
        
     CartService.find_by_id(newOrder.userid).then((result) => {
       console.log("result from cart", result)
