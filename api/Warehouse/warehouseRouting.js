@@ -8,6 +8,6 @@ router.post("/add_warehouse",warehouseController.create);
 router.post("/get_warehouse_by_id",warehouseController.find_by_id);
 router.get("/get_all_warehouse",warehouseController.find_all);
 router.put("/update_warehouse_by_id",warehouseController.find_and_update)
-router.patch("/delete_warehouse_by_id",warehouseController.find_and_delete);
+router.delete("/delete_warehouse_by_id",warehouseController.find_and_delete);
 
 module.exports = router;

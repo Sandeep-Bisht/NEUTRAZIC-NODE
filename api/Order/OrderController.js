@@ -191,16 +191,16 @@ module.exports = {
     }
   },
   updateOrder: (req, res, next) => {
-    const { _id, status, justification, delivery_time } = req.body;
+    const { _id, status, } = req.body;
     // console.log(req.body)
     try {
-      OrderService.updateOrder(_id, status, justification, delivery_time).then(
+      OrderService.updateOrder(_id, status).then(
         (result) => {
           // console.log(result);
-          if (result.length > 0) {
+          if (result) {
             res.status(200).json({
               data: result,
-              msg: "data found",
+              msg: "Order status updated",
             });
           } else {
             res.json({
@@ -271,7 +271,7 @@ const createOrder = async (customer, data) => {
   try {      
        
     CartService.find_by_id(newOrder.userid).then((result) => {
-      console.log("result from cart", result)
+      // console.log("result from cart", result)
       if (result && result.cartStatus == "Open") { 
         let {_id, userid, order, cartStatus} = result; 
         cartStatus = "Closed"
