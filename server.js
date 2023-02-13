@@ -15,8 +15,8 @@ const BlogsRouter = require('./api/Blogs/blogRouting')
 
 const cors = require('cors');
 require('dotenv').config()
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ limit: "50mb", extended: true, parameterLimit: 50000 }))
+app.use(bodyParser.json({ limit: "100mb", extended: true, parameterLimit: 50000 }));
+app.use(bodyParser.urlencoded({ limit: "100mb", extended: true, parameterLimit: 50000 }))
 app.use(cors({ origin: true }));
 app.use('/public', express.static('public'));
 app.use('/api/auth',LoginRouter);
