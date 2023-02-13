@@ -15,7 +15,7 @@ const blogSchema = new Schema({
         type: String
     },
     featuredImage: {
-        type: Array
+        type:Array
     },
     content: {
         required: true,
