@@ -19,13 +19,17 @@ const ProductSchema = new Schema({
     type: Schema.Types.ObjectId, 
     ref: "Category" 
   },
-  storage: {
-    type: String,
+  warehouse: {
+    type: Schema.Types.ObjectId,
+    ref:"warehouse"
   },
   type: {
     type: String,
   },
   inrMrp: {
+    type: String,
+  },
+  quantity: {
     type: String,
   },
   dollerMrp: {
