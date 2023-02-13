@@ -1,9 +1,9 @@
 const blogService = require('./blogService')
 module.exports = {
     create : async(req,res) => {
-      console.log("inside create", req.body,"files", req.files)
+      // console.log("inside create", req.body,"files", req.files)
         try {
-            var data = {...req.body, image:req.files }
+            var data = {...req.body, featuredImage:req.files }
             blogService.create(data).then((result) => {
                 if(result) {
                     res.json({
@@ -112,7 +112,7 @@ module.exports = {
         },
       find_and_delete:(req,res)=>{
         const {_id} = req.body
-        // console.log(_id,"here")
+        
         try{  
             blogService.find_and_delete(_id).then((result) => {      
               if (result) {  
