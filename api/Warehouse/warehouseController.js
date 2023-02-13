@@ -1,9 +1,9 @@
 const warehouseService = require("./warehouseService");
 module.exports = {
-    create: async (req,res) =>{
+    create:  (req, res) =>{
       console.log(req.body,"inside warehouse create")
         try {
-            var data = {...req.body};
+            var data = { ...req.body };
             warehouseService.create(data).then((result) =>{
               console.log(result,"result")
              if(result) {

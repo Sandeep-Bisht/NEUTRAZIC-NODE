@@ -2,8 +2,9 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const warehouseSchema = new Schema({
     name: {
-        required: true,
         type: String,
+        required: true,        
+        unique: true,
     },
     description:{
         type:String
