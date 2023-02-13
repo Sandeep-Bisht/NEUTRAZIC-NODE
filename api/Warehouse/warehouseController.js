@@ -111,32 +111,31 @@ module.exports = {
             });
           }
         },
-      find_and_delete:(req,res)=>{
-        const {_id} = req.body
-        // console.log(_id,"here")
-        try{  
-          warehouseService.find_and_delete(_id).then((result) => {      
-              if (result.length>0) {  
+        find_and_delete:(req,res)=>{
+          const {_id} = req.body
+           console.log(req.body,"here")
+          try{  
+            warehouseService.find_and_delete(_id).then((result) => {      
+                if (result.length>0) {  
+                  res.status(200).json({
+                    data: result,
+                    msg:'cart item deleted'
+                  });
+                       
+                } else {
+                  res.json({
+                    error: 400,
+                    message: "Data Not Found",
+                  });
+                }
+              })
+            }
+             catch (err) {
+                console.log(err);
                 res.json({
-                    success:200,
-                  data: result,
-                  msg:'cart item deleted'
+                  sucess: 400,
+                  message: "Please provide correct information",
                 });
-                     
-              } else {
-                res.json({
-                  error: 400,
-                  message: "Data Not Found",
-                });
-              }
-            })
-          }
-           catch (err) {
-              console.log(err);
-              res.json({
-                error: 400,
-                message: "Please provide correct information",
-              });
-            }     
-      }
+              }     
+        }
 }

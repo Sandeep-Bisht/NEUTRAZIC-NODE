@@ -4,7 +4,6 @@ const warehouseSchema = new Schema({
     name: {
         required: true,
         type: String,
-        unique: true,
     },
     description:{
         type:String

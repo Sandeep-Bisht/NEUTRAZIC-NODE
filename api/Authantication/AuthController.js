@@ -150,29 +150,46 @@ module.exports = {
 
   find_and_update : (req,res) => {
     const {_id} = req.body;
-    console.log(req.body,"helo body");
-   try{
-    AuthService.find_and_update(_id,req.body).then((result) => {
-      if (result) {
-        res.status(200).json({
-          success: 200,
-          msg:"User Updated"
-        })
-      }else {
-        res.json({
-          success : 400,
-          msg : 'Data not found'
-        })
+    const { password } = req.body;
+    // console.log(req.body)
+    bcrypt.hash(password, 10, (error, hash) => {
+      if (error) {
+        res.status(500).json({
+          msg: "internal Server Error",
+        });
+        console.log(error);
+      } else {
+        try {
+          var data = {
+            username: req.body.username,
+            password: hash,
+            email: req.body.email,
+            phonenumber:req.body.phonenumber,
+            role:req.body.role,
+            organization:req.body.organization
+          };
+          AuthService.find_and_update(_id,data).then((result) => {
+            if (result) {              
+              res.json({
+                sucess: 200,
+                message: "User Updated succefully",
+              });
+            } else {
+              res.json({
+                sucess: 400,
+                message: "Please provide correct information",
+              });
+            }
+          });
+        } catch (err) {
+          console.log(err);
+          res.json({
+            sucess: 400,
+            message: "Please provide correct information",
+          });
+        }
       }
-    })
-
-   }catch (err){
-      console.log(err, "err")
-      res.json({
-      success: 400,
-      message: "Please provide correct information",
-      })
-   }
+    });
   },
 
   find_and_delete:(req,res)=>{
