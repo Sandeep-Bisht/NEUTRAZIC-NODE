@@ -17,6 +17,19 @@ module.exports = {
                 message: "Please provide correct information",
               });
             }
+          }).catch((err) => {
+            if (err.message.includes("duplicate key error")) {
+              res.status(400).json({
+                success: 400,
+                message: "Product already exists",
+              });
+            } else {
+              console.log(err);
+              res.json({
+                success: 400,
+                message: "Please provide correct information",
+              });
+            }
           });
         } catch (err) {
           console.log(err);
@@ -55,7 +68,6 @@ module.exports = {
     const{_id}=req.body
     try {            
       ProductService.find_by_id(_id).then((result) => {
-        // console.log(result)
         if (result) {  
           res.status(200).json({
             data: result,
