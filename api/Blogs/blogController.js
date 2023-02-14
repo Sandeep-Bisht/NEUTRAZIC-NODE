@@ -17,7 +17,7 @@ module.exports = {
                     })
                 }
             }).catch((err) => {
-              if (err.message.includes("duplicate key error")) {
+              if (err.code === 11000) {
                 res.status(400).json({
                   success: 400,
                   message: "Blog already exists",
@@ -64,6 +64,7 @@ module.exports = {
     },
     find_by_slug : async(req,res) => {
         const { slug } = req.body;
+        console.log(req.body,"inside find")
         try {
             blogService.find_by_slug(slug).then((result) => {
                 if(result) {
