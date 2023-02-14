@@ -17,6 +17,19 @@ module.exports = {
             message: "Please provide correct information",
           });
         }
+      }).catch((err) => {
+        if (err.code === 11000) {
+          res.status(400).json({
+            success: 400,
+            message: "Manufacturer already exists",
+          });
+        } else {
+          console.log(err);
+          res.json({
+            success: 400,
+            message: "Please provide correct information",
+          });
+        }
       });
     } catch (err) {
       console.log(err);
