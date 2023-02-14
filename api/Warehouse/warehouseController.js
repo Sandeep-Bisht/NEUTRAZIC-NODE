@@ -17,7 +17,20 @@ module.exports = {
                     messgae: "Somthing went wrong"
                 })
              }
-            })
+            }).catch((err) => {
+              if (err.code === 11000) {
+                res.status(400).json({
+                  success: 400,
+                  message: "Warehouse already exists",
+                });
+              } else {
+                console.log(err);
+                res.json({
+                  success: 400,
+                  message: "Please provide correct information",
+                });
+              }
+            });
         } catch (error) {
             console.log(error)
             res.json({
