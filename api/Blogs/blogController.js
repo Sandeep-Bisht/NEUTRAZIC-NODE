@@ -88,16 +88,17 @@ module.exports = {
         }
     },
     find_and_update:(req,res,next)=>{
+  
         const{_id}=req.body;
-        var images   
+        var featuredImages;   
         if(req.files[0]){
-          images = req.files    
+        featuredImages = req.files    
         }
         else{
-          images = req.body.image
+          featuredImages = req.body.image
         }
     
-        const data={...req.body} 
+        const data={...req.body,featuredImage:featuredImages} 
         try{  
             blogService.find_and_update(_id,data).then((result) => {      
             if (result) {  
@@ -109,7 +110,7 @@ module.exports = {
                    
             } else {
               res.json({
-                error: 200,
+                error: 404,
                 message: "Data Not Found",
               });
             }
