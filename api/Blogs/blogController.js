@@ -17,7 +17,7 @@ module.exports = {
                     })
                 }
             }).catch((err) => {
-              if (err.message.includes("duplicate key error")) {
+              if (err.code === 11000) {
                 res.status(400).json({
                   success: 400,
                   message: "Blog already exists",
