@@ -3,8 +3,8 @@ module.exports={
     create:(data)=>{
         return blogModel.create(data)
     },
-    find_by_slug:(_id)=>{
-        return blogModel.find({_id})
+    find_by_slug:(slug)=>{
+        return blogModel.find({slug})
     },
     find_all:()=>{
         return blogModel.find()
