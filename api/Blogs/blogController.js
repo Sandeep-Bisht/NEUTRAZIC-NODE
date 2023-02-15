@@ -64,7 +64,6 @@ module.exports = {
     },
     find_by_slug : async(req,res) => {
         const { slug } = req.body;
-        console.log(req.body,"inside find")
         try {
             blogService.find_by_slug(slug).then((result) => {
                 if(result) {
