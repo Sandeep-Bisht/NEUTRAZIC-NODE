@@ -6,6 +6,15 @@ const warehouseSchema = new Schema({
         required: true,        
         unique: true,
     },
+    warehouseContactNo: {
+        type: String,        
+    },
+    warehouseAddress: {
+        type: String
+    },
+    creatorId: {
+        type: String
+    },
     description:{
         type:String
     }
