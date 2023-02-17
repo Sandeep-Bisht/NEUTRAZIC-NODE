@@ -9,6 +9,10 @@ const manufacturerSchema = new Schema({
   image: {
     type: Array,
    },
+   creatorId: {
+    type: String,
+    required: true,
+   },
    description:{
     type: String,  
    }
