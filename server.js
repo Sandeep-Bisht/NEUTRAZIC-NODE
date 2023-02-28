@@ -12,7 +12,7 @@ const OrderRouter=require('./api/Order/OrderRouting')
 const WishlistRouter=require('./api/Wishlist/WishlistRouting')
 const WarehouseRouter = require('./api/Warehouse/warehouseRouting')
 const BlogsRouter = require('./api/Blogs/blogRouting')
-const ShippingRouter = require('./api/Shipping/ShippingRouting')
+//const ShippingRouter = require('./api/Shipping/ShippingRouting')
 
 const cors = require('cors');
 require('dotenv').config()
