@@ -1,24 +1,25 @@
-const OrderService = require("./OrderService");
-const CartService = require("../Cart/CartService");
+//onst OrderService = require("./OrderService");
+//const CartService = require("../Cart/CartService");
 require("dotenv").config();
 const router = require("express").Router();
 const express = require("express");
 
 const Stripe = require("stripe");
-const stripe = Stripe(process.env.STRIPE_KEY);
+const stripe = Stripe(process.env.MHA_STRIPE_KEY);
 //end code for images
 module.exports = {
   create: async (req, res) => {
     const { order } = req.body;
-    // console.log("inside cretae ",req.body)
+     console.log("inside cretae mha",order, req.body)
     const customer = await stripe.customers.create({
       metadata: {
         userid: req.body.userid,
+        accountId : req.body.accountId, 
         cart : order,       
-        customerName: req.body.username,
-        customerNumber: req.body.mobile,
-        customerEmail: req.body.email,
-        order_no : req.body.order_no,
+        customerName: req.body.address.name,
+        customerNumber: req.body.address.phoneNumber,
+        // customerEmail: req.body.email,
+        order_no : req.body.orderId,
       },
     });
 
@@ -34,12 +35,12 @@ module.exports = {
               `http://arogyapath.org/_next/image?url=%2Fimages%2FAyurveda-Book.png&w=64&q=75`,
             ],
           },
-          unit_amount: parseInt(item.singleprice * 100),
+          unit_amount: item.unitPrice,
         },
         quantity: item.quantity,
       });
     });
-    console.log(productArray[0].price_data.product_data,"productArray productArray")
+    console.log(productArray[0],"productArray productArray")
 
     const session = await stripe.checkout.sessions.create({
       customer: customer.id,
@@ -61,17 +62,20 @@ module.exports = {
       ],
       line_items: productArray,
       mode: "payment",
-      success_url: `${process.env.CLIENT_URL}/orderSuccess`,
-      cancel_url: `${process.env.CLIENT_URL}/cart`,
+      success_url: `${process.env.MHA_CLIENT_URL}/success`,
+      cancel_url: `${process.env.MHA_CLIENT_URL}/checkout`,
     });
+    console.log("after session")
     try {
       if (session.success_url) {
+        console.log("inside try")
         res.json({
           success: 200,
           url: session.url,
           message: "Ordered created succefully",
         });
       } else {
+        console.log("inside else")
         res.json({
           success: 400,
           message: "Please provide correct information",
@@ -80,12 +84,11 @@ module.exports = {
     } catch (error) {
       console.log(error);
       res.json({
-        sucess: 400,
+        success: 400,
         message: "Please provide correct information",
       });
     }
 
-    //   OrderService.create(data).then((result) => {
   },
 
   // stripe webhook
@@ -125,10 +128,10 @@ module.exports = {
       stripe.customers
         .retrieve(data.customer)
         .then((customer) => {
-          // console.log(customer, "customer");
-          // console.log("data ", data);
+           console.log(customer, "customer");
+           console.log("data ", data);
         
-          createOrder(customer, data);
+         // createOrder(customer, data);
 
         })
         .catch((err) => console.log(err.message));
@@ -138,111 +141,6 @@ module.exports = {
     res.send().end();
   },
 
-  find_all: (req, res, next) => {
-    // console.log("category hit")
-    try {
-      OrderService.find_all().then((result) => {
-        // console.log(result);
-        if (result) {
-          res.status(200).json({
-            data: result,
-            msg: "data found",
-          });
-        } else {
-          res.json({
-            sucess: 400,
-            message: "Data Not Found",
-          });
-        }
-      });
-    } catch (err) {
-      console.log(err);
-      res.json({
-        sucess: 400,
-        message: "Please provide correct information",
-      });
-    }
-  },
-  find_by_id: (req, res, next) => {
-    const { userid } = req.body;
-    // console.log(req.body)
-    try {
-      OrderService.find_by_id(userid).then((result) => {
-        // console.log(result);
-        if (result.length > 0) {
-          res.status(200).json({
-            data: result,
-            msg: "data found",
-          });
-        } else {
-          res.json({
-            error: 400,
-            message: "Data Not Found",
-          });
-        }
-      });
-    } catch (err) {
-      console.log(err);
-      res.json({
-        sucess: 400,
-        message: "Please provide correct information",
-      });
-    }
-  },
-  updateOrder: (req, res, next) => {
-    const { _id,  } = req.body;
-    console.log(_id,"dataa",req.body)
-    let data = {...req.body}
-    try {
-      OrderService.updateOrder(_id, data).then(
-        (result) => {
-          // console.log(result);
-          if (result) {
-            res.status(200).json({
-              data: result,
-              msg: "Order status updated",
-            });
-          } else {
-            res.json({
-              error: 400,
-              message: "Data Not Found",
-            });
-          }
-        }
-      );
-    } catch (err) {
-      console.log(err);
-      res.json({
-        sucess: 400,
-        message: "Please provide correct information",
-      });
-    }
-  },
-  find_and_delete: (req, res) => {
-    const { _id } = req.body;
-    // console.log(_id,"here")
-    try {
-      OrderService.find_and_delete(_id).then((result) => {
-        if (result.length > 0) {
-          res.status(200).json({
-            data: result,
-            msg: "cart item deleted",
-          });
-        } else {
-          res.json({
-            error: 400,
-            message: "Data Not Found",
-          });
-        }
-      });
-    } catch (err) {
-      console.log(err);
-      res.json({
-        sucess: 400,
-        message: "Please provide correct information",
-      });
-    }
-  },
 };
 
 const createOrder = async (customer, data) => {
