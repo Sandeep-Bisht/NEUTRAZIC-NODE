@@ -61,50 +61,40 @@ module.exports = {
   isuser: (req, res, next) => {
     try {
       var data = {
-      username: req.body.username,
+        username: req.body.username,
       };
-      // console.log(req.body);
       AuthService.isuser(data).then((result) => {
-        // console.log(result, 'resulttt')
-        if (result) {          
-          bcrypt.compare(
-            req.body.password,
-            result[0].password,
-            (err, response) => {              
-              if (response) {
-                // console.log(response, 'response')
-                var token = jwt.sign(
-                  {
-                    username: req.body.username,
-                  },
-                  "this is my medzone key",
-                  { expiresIn: "1h" }
-                )
-                // console.log('valid')
-                res.status(200).json({
-                  token: token,                  
-                  ...result[0]._doc
-                });
-              }
-              if (err) {
-                return res.status(401).json({
-                  msg: "Invalid Password",
-                });
-              }
+        if (result.length > 0) {
+          bcrypt.compare(req.body.password, result[0].password, (err, response) => {
+            if (response) {
+              var token = jwt.sign(
+                                {
+                                  username: req.body.username,
+                                },
+                                "this is my medzone key",
+                                { expiresIn: "1h" }
+                              )
+                              // console.log('valid')
+                              res.status(200).json({
+                                token: token,                  
+                                ...result[0]._doc
+                              });
+            } else {
+              res.status(401).json({
+                message: "Invalid username or password",
+              });
             }
-          );
+          });
         } else {
-          res.json({
-            sucess: 400,
-            message: "user name or password is not valid",
+          res.status(401).json({
+            message: "Invalid username or password",
           });
         }
       });
+      
     } catch (err) {
-      // console.log(err);
-      res.json({
-        sucess: 400,
-        message: "Please provide correct information",
+      res.status(500).json({
+        message: "Something went wrong. Please try again later.",
       });
     }
   },
