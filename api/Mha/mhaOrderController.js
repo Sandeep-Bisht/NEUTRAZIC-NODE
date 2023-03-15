@@ -3,6 +3,7 @@
 require("dotenv").config();
 const router = require("express").Router();
 const express = require("express");
+const axios = require('axios');
 
 const Stripe = require("stripe");
 const stripe = Stripe(process.env.MHA_STRIPE_KEY);
@@ -13,13 +14,16 @@ module.exports = {
      console.log("inside cretae mha",order, req.body)
     const customer = await stripe.customers.create({
       metadata: {
-        userid: req.body.userid,
+        user_id: req.body.userid,
+        mhaUser : req.body.userId,
         accountId : req.body.accountId, 
         cart : order,       
         customerName: req.body.address.name,
         customerNumber: req.body.address.phoneNumber,
         // customerEmail: req.body.email,
+        userShipping_details : JSON.stringify(req.body.address),
         order_no : req.body.orderId,
+        userToken : req.body.userToken
       },
     });
 
@@ -30,52 +34,49 @@ module.exports = {
           currency: "inr",
           product_data: {
             name: item.name,
-            // images : [item.image]
-            images: [
-              `http://arogyapath.org/_next/image?url=%2Fimages%2FAyurveda-Book.png&w=64&q=75`,
-            ],
+            images : [item.image]
+            // images: [
+            //   `http://arogyapath.org/_next/image?url=%2Fimages%2FAyurveda-Book.png&w=64&q=75`,
+            // ],
           },
           unit_amount: item.unitPrice,
         },
         quantity: item.quantity,
       });
     });
-    console.log(productArray[0],"productArray productArray")
+    // console.log(productArray[0],"productArray productArray")
 
     const session = await stripe.checkout.sessions.create({
       customer: customer.id,
       // cart : JSON.stringify(req.body.order),
       payment_method_types: ["card"],
-      shipping_address_collection: { allowed_countries: ["US", "IN"] },
-      shipping_options: [
-        {
-          shipping_rate_data: {
-            type: "fixed_amount",
-            fixed_amount: { amount: 0, currency: "inr" },
-            display_name: "Free shipping",
-            delivery_estimate: {
-              minimum: { unit: "business_day", value: 5 },
-              maximum: { unit: "business_day", value: 7 },
-            },
-          },
-        },
-      ],
+      // shipping_address_collection: { allowed_countries: ["US", "IN"] },
+      // shipping_options: [
+      //   {
+      //     shipping_rate_data: {
+      //       type: "fixed_amount",
+      //       fixed_amount: { amount: 0, currency: "inr" },
+      //       display_name: "Free shipping",
+      //       delivery_estimate: {
+      //         minimum: { unit: "business_day", value: 5 },
+      //         maximum: { unit: "business_day", value: 7 },
+      //       },
+      //     },
+      //   },
+      // ],
       line_items: productArray,
       mode: "payment",
       success_url: `${process.env.MHA_CLIENT_URL}/success`,
       cancel_url: `${process.env.MHA_CLIENT_URL}/checkout`,
     });
-    console.log("after session")
     try {
       if (session.success_url) {
-        console.log("inside try")
         res.json({
           success: 200,
           url: session.url,
           message: "Ordered created succefully",
         });
       } else {
-        console.log("inside else")
         res.json({
           success: 400,
           message: "Please provide correct information",
@@ -110,7 +111,7 @@ module.exports = {
           sig,
           endpointSecret
         );
-         console.log("web hook verified");
+        //  console.log("web hook verified");
       } catch (err) {
          console.log(`web hook failed : ${err.message}, err, ${err}`);
         res.status(400).send(`Webhook Error: ${err.message}`);
@@ -128,10 +129,10 @@ module.exports = {
       stripe.customers
         .retrieve(data.customer)
         .then((customer) => {
-           console.log(customer, "customer");
-           console.log("data ", data);
+          //  console.log(customer, "customer");
+          //  console.log("data ", data);
+           updateOrder(customer, data)       
         
-         // createOrder(customer, data);
 
         })
         .catch((err) => console.log(err.message));
@@ -142,6 +143,35 @@ module.exports = {
   },
 
 };
+
+const updateOrder = async (customer, data) => {
+  let id = customer.metadata.order_no;
+  let status = 0;
+   let userId = customer.metadata.mhaUser;
+  let accountId = customer.metadata.accountId;
+  let companyId = 38401;
+  let groupId = 38607;
+  let userToken = customer.metadata.userToken
+  let payload = {
+    customer,
+    data
+  }
+
+  let url = `http://13.126.72.50:8282/o/mha-headless/commerce/update-order-payment/?orderId=${id}&status=${status}&userId=${userId}&accountId=${accountId}&companyId=${companyId}&groupId=${groupId}`;
+console.log("url", url)
+  axios.post(url, payload,  {
+    headers: {
+      Authorization: 'Bearer ' + userToken
+    }
+  })
+  .then(response => {
+    console.log(response.data);
+  })
+  .catch(error => {
+    console.log(error);
+  });
+
+}
 
 const createOrder = async (customer, data) => {
   //const Items = JSON.parse(customer.metadata.cart);
