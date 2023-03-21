@@ -29,4 +29,4 @@ module.exports = function(){
     mongoose.connection.on('connected',()=>{
         console.log("Database is connected ")
     })
-}
+} 
