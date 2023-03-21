@@ -66,7 +66,7 @@ module.exports = {
       };
       AuthService.isuser(data).then((result) => {
            if (result.length > 0 && result[0].userStatus=="Activate") {
-            console.log(result,"heloresultttttt");
+         
               bcrypt.compare(req.body.password, result[0].password, (err, response) => {
                 if (response) {
                   console.log(response,"responessssss");
