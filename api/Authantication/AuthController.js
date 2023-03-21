@@ -19,6 +19,7 @@ module.exports = {
             email: req.body.email,
             phonenumber:req.body.phonenumber,
             role:req.body.role,
+            userStatus:"Activate",
             organization:req.body.organization
           };
           console.log(data, "insdide create dataaa")
@@ -64,32 +65,37 @@ module.exports = {
         username: req.body.username,
       };
       AuthService.isuser(data).then((result) => {
-        if (result.length > 0) {
-          bcrypt.compare(req.body.password, result[0].password, (err, response) => {
-            if (response) {
-              var token = jwt.sign(
-                                {
-                                  username: req.body.username,
-                                },
-                                "this is my medzone key",
-                                { expiresIn: "1h" }
-                              )
-                              // console.log('valid')
-                              res.status(200).json({
-                                token: token,                  
-                                ...result[0]._doc
-                              });
-            } else {
+           if (result.length > 0 && result[0].userStatus=="Activate") {
+            console.log(result,"heloresultttttt");
+              bcrypt.compare(req.body.password, result[0].password, (err, response) => {
+                if (response) {
+                  console.log(response,"responessssss");
+                  var token = jwt.sign(
+                                    {
+                                      username: req.body.username,
+                                    },
+                                    "this is my medzone key",
+                                    { expiresIn: "1h" }
+                                  )
+                                  // console.log('valid')
+                                  res.status(200).json({
+                                    token: token,                  
+                                    ...result[0]._doc
+                                  });
+                } else{
+                  res.status(401).json({
+                    message: "Invalid username or password",
+                  });
+                }
+              });
+              } 
+            else{
               res.status(401).json({
-                message: "Invalid username or password",
+                message: "user is De-Activated",
               });
             }
-          });
-        } else {
-          res.status(401).json({
-            message: "Invalid username or password",
-          });
-        }
+          
+        
       });
       
     } catch (err) {
@@ -98,6 +104,7 @@ module.exports = {
       });
     }
   },
+  
   find_all: (req, res, next) => {
     try {            
       AuthService.find_all().then((result) => {
@@ -155,7 +162,6 @@ module.exports = {
   find_and_update : (req,res) => {
     const {_id} = req.body;
     const { password } = req.body;
-    // console.log(req.body)
     bcrypt.hash(password, 10, (error, hash) => {
       if (error) {
         res.status(500).json({
@@ -170,6 +176,7 @@ module.exports = {
             email: req.body.email,
             phonenumber:req.body.phonenumber,
             role:req.body.role,
+            userStatus:req.body.userStatus,
             organization:req.body.organization
           };
           AuthService.find_and_update(_id,data).then((result) => {
@@ -181,7 +188,7 @@ module.exports = {
             } else {
               res.json({
                 sucess: 400,
-                message: "Please provide correct information",
+                message: "Please provide correct",
               });
             }
           });

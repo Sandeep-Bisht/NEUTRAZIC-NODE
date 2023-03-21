@@ -4,6 +4,7 @@ const LoginSchema = new Schema({
   username: {
     required: true,
     type: String,
+    unique:true,
     
   },
   email: {
@@ -21,6 +22,10 @@ const LoginSchema = new Schema({
   },
   role:{
   type: String, 
+  },
+  userStatus:{
+    type:String,
+    required:true,
   },
   organization:{
     type: String, 
