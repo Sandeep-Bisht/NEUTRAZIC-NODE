@@ -19,7 +19,7 @@ module.exports = {
             email: req.body.email,
             phonenumber:req.body.phonenumber,
             role:req.body.role,
-            userStatus:req.body.userStatus,
+            userStatus:"Activate",
             organization:req.body.organization
           };
           console.log(data, "insdide create dataaa")
