@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 module.exports = {
   create: (req, res) => {
     const { password } = req.body;
-    // console.log(req.body)
+     console.log(req.body)
     bcrypt.hash(password, 10, (error, hash) => {
       if (error) {
         res.status(500).json({
@@ -19,11 +19,12 @@ module.exports = {
             email: req.body.email,
             phonenumber:req.body.phonenumber,
             role:req.body.role,
-            userStatus:"Activate",
+            userStatus:req.body.userStatus,
             organization:req.body.organization
           };
           console.log(data, "insdide create dataaa")
           AuthService.create(data).then((result) => {
+            console.log(result,"created register")
             if (result) {              
               res.json({
                 sucess: 200,
@@ -59,48 +60,98 @@ module.exports = {
       }
     });
   },
+  // isuser: (req, res, next) => {
+  //   try {
+  //     var data = {
+  //       username: req.body.username,
+  //     };
+  //     AuthService.isuser(data).then((result) => {
+  //          if (result && result.length > 0 && result[0].userStatus=="Activate") {
+         
+  //             bcrypt.compare(req.body.password, result[0].password, (err, response) => {
+  //               if (response) {
+  //                 console.log(response,"responessssss");
+  //                 var token = jwt.sign(
+  //                                   {
+  //                                     username: req.body.username,
+  //                                   },
+  //                                   "this is my medzone key",
+  //                                   { expiresIn: "1h" }
+  //                                 )
+  //                                 // console.log('valid')
+  //                                 res.status(200).json({
+  //                                   token: token,                  
+  //                                   ...result[0]
+  //                                 });
+  //               } else{
+  //                 res.status(401).json({
+  //                   message: "Invalid username or password",
+  //                 });
+  //               }
+  //             });
+  //             } 
+  //           else{
+  //             res.status(401).json({
+  //               message: "user is De-Activated",
+  //             });
+  //           }
+          
+        
+  //     });
+      
+  //   } catch (err) {
+  //     res.status(500).json({
+  //       message: "Something went wrong. Please try again later.",
+  //     });
+  //   }
+  // },
   isuser: (req, res, next) => {
     try {
       var data = {
-        username: req.body.username,
+      username: req.body.username,
       };
+      // console.log(req.body);
       AuthService.isuser(data).then((result) => {
-           if (result.length > 0 && result[0].userStatus=="Activate") {
-         
-              bcrypt.compare(req.body.password, result[0].password, (err, response) => {
-                if (response) {
-                  console.log(response,"responessssss");
-                  var token = jwt.sign(
-                                    {
-                                      username: req.body.username,
-                                    },
-                                    "this is my medzone key",
-                                    { expiresIn: "1h" }
-                                  )
-                                  // console.log('valid')
-                                  res.status(200).json({
-                                    token: token,                  
-                                    ...result[0]._doc
-                                  });
-                } else{
-                  res.status(401).json({
-                    message: "Invalid username or password",
-                  });
-                }
-              });
-              } 
-            else{
-              res.status(401).json({
-                message: "user is De-Activated",
-              });
+        // console.log(result, 'resulttt')
+        if (result) {          
+          bcrypt.compare(
+            req.body.password,
+            result[0].password,
+            (err, response) => {              
+              if (response) {
+                // console.log(response, 'response')
+                var token = jwt.sign(
+                  {
+                    username: req.body.username,
+                  },
+                  "this is my medzone key",
+                  { expiresIn: "1h" }
+                )
+                // console.log('valid')
+                res.status(200).json({
+                  token: token,                  
+                  ...result[0]._doc
+                });
+              }
+              if (err) {
+                return res.status(401).json({
+                  msg: "Invalid Password",
+                });
+              }
             }
-          
-        
+          );
+        } else {
+          res.json({
+            sucess: 400,
+            message: "user name or password is not valid",
+          });
+        }
       });
-      
     } catch (err) {
-      res.status(500).json({
-        message: "Something went wrong. Please try again later.",
+      // console.log(err);
+      res.json({
+        sucess: 400,
+        message: "Please provide correct information",
       });
     }
   },
