@@ -22,6 +22,9 @@ const LoginSchema = new Schema({
   role:{
   type: String, 
   },
+  userStatus:{
+    type:String,
+  },
   organization:{
     type: String, 
     }

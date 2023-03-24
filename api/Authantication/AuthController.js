@@ -19,10 +19,11 @@ module.exports = {
             email: req.body.email,
             phonenumber:req.body.phonenumber,
             role:req.body.role,
-            organization:req.body.organization
+            organization:req.body.organization,
+            userStatus:"Activate",
           };
           console.log(data, "insdide create dataaa")
-          AuthService.create(data).then((result) => {
+          AuthService.create(data).then((result) =>{
             if (result) {              
               res.json({
                 sucess: 200,
@@ -58,56 +59,102 @@ module.exports = {
       }
     });
   },
+  // isuser: (req, res, next) => {
+  //   try {
+  //     var data = {
+  //     username: req.body.username,
+  //     };
+  //     // console.log(req.body);
+  //     AuthService.isuser(data).then((result) => {
+  //       // console.log(result, 'resulttt')
+  //       if (result) {          
+  //         bcrypt.compare(
+  //           req.body.password,
+  //           result[0].password,
+  //           (err, response) => {              
+  //             if (response) {
+  //               // console.log(response, 'response')
+  //               var token = jwt.sign(
+  //                 {
+  //                   username: req.body.username,
+  //                 },
+  //                 "this is my medzone key",
+  //                 { expiresIn: "1h" }
+  //               )
+  //               // console.log('valid')
+  //               res.status(200).json({
+  //                 token: token,                  
+  //                 ...result[0]._doc
+  //               });
+  //             }
+  //             if (err) {
+  //               return res.status(401).json({
+  //                 msg: "Invalid Password",
+  //               });
+  //             }
+  //           }
+  //         );
+  //       } else {
+  //         res.json({
+  //           sucess: 400,
+  //           message: "user name or password is not valid",
+  //         });
+  //       }
+  //     });
+  //   } catch (err) {
+  //     // console.log(err);
+  //     res.json({
+  //       sucess: 400,
+  //       message: "Please provide correct information",
+  //     });
+  //   }
+  // },
   isuser: (req, res, next) => {
     try {
       var data = {
-      username: req.body.username,
+        username: req.body.username,
       };
-      // console.log(req.body);
       AuthService.isuser(data).then((result) => {
-        // console.log(result, 'resulttt')
-        if (result) {          
-          bcrypt.compare(
-            req.body.password,
-            result[0].password,
-            (err, response) => {              
-              if (response) {
-                // console.log(response, 'response')
-                var token = jwt.sign(
-                  {
-                    username: req.body.username,
-                  },
-                  "this is my medzone key",
-                  { expiresIn: "1h" }
-                )
-                // console.log('valid')
-                res.status(200).json({
-                  token: token,                  
-                  ...result[0]._doc
-                });
-              }
-              if (err) {
-                return res.status(401).json({
-                  msg: "Invalid Password",
-                });
-              }
+           if (result.length > 0 && result[0].userStatus=="Activate") {
+         
+              bcrypt.compare(req.body.password, result[0].password, (err, response) => {
+                if (response) {
+                  console.log(response,"responessssss");
+                  var token = jwt.sign(
+                                    {
+                                      username: req.body.username,
+                                    },
+                                    "this is my medzone key",
+                                    { expiresIn: "1h" }
+                                  )
+                                  // console.log('valid')
+                                  res.status(200).json({
+                                    token: token,                  
+                                    ...result[0]._doc
+                                  });
+                } else{
+                  res.status(401).json({
+                    message: "Invalid username or password",
+                  });
+                }
+              });
+              } 
+            else{
+              res.status(401).json({
+                message: "user is De-Activated",
+              });
             }
-          );
-        } else {
-          res.json({
-            sucess: 400,
-            message: "user name or password is not valid",
-          });
-        }
+          
+        
       });
+      
     } catch (err) {
-      // console.log(err);
-      res.json({
-        sucess: 400,
-        message: "Please provide correct information",
+      res.status(500).json({
+        message: "Something went wrong. Please try again later.",
       });
     }
   },
+  
   find_all: (req, res, next) => {
     try {            
       AuthService.find_all().then((result) => {
