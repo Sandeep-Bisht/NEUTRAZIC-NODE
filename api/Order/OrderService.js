@@ -9,8 +9,8 @@ find_by_id:(userid)=>{
 find_all:()=>{
     return OrderModal.find()
 },
-updateOrder:(_id,status)=>{
-    return OrderModal.findByIdAndUpdate({_id},{status})
+updateOrder:(_id,data)=>{
+    return OrderModal.findByIdAndUpdate({_id},data)
 },
 find_and_delete:(_id)=>{
     return OrderModal.findByIdAndRemove({_id})

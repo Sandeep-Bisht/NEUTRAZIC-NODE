@@ -5,9 +5,11 @@
 //     mongoose.connect(process.env.DB_URL,{
 //         useNewUrlParser:true,
 //         useUnifiedTopology: true,
+//         useCreateIndex: true,
+//          useFindAndModify: true,
 //         auth: {
-//             "user":"nutraZicadmin",
-//             "password":"T3st$3m0123",  
+//             "user":"NeutrazicAdmin",
+//             "password":"SOSh3AWDPC4499GTbYhxY8",  
 //           },
 //     })
 //     mongoose.connection.on('connected',()=>{
@@ -27,4 +29,4 @@ module.exports = function(){
     mongoose.connection.on('connected',()=>{
         console.log("Database is connected ")
     })
-}
+} 

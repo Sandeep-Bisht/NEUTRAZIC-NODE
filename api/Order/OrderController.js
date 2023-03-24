@@ -10,8 +10,7 @@ const stripe = Stripe(process.env.STRIPE_KEY);
 module.exports = {
   create: async (req, res) => {
     const { order } = req.body;
-    console.log("inside cretae ",req.body)
-    debugger;
+    // console.log("inside cretae ",req.body)
     const customer = await stripe.customers.create({
       metadata: {
         userid: req.body.userid,
@@ -191,10 +190,11 @@ module.exports = {
     }
   },
   updateOrder: (req, res, next) => {
-    const { _id, status, } = req.body;
-    // console.log(req.body)
+    const { _id,  } = req.body;
+    console.log(_id,"dataa",req.body)
+    let data = {...req.body}
     try {
-      OrderService.updateOrder(_id, status).then(
+      OrderService.updateOrder(_id, data).then(
         (result) => {
           // console.log(result);
           if (result) {
@@ -264,7 +264,7 @@ const createOrder = async (customer, data) => {
     deliverytype: "Standard",
     address: data.shipping_details.address,
     payment_status: data.payment_status,
-    status :"Pending",
+    orderStatus :"Pending",
     order_no: customer.metadata.order_no,
   };
 

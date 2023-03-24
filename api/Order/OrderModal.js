@@ -15,7 +15,7 @@ const OrderSchema = new Schema({
     mobile:{
         type:String, required:true
     }, 
-    status:{
+    orderStatus:{
     type:String,        
     }, 
     transaction_id:{
@@ -44,6 +44,15 @@ const OrderSchema = new Schema({
     },
     deliverytype:{
     type:String
+    },
+    delivery_time:{
+    type:String
+    },
+    shippingDate: {
+        type: String
+    },
+    shipperName: {
+        type: String
     },
     username:{
     type:String
