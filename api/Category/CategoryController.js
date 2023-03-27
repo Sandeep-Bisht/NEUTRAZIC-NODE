@@ -2,17 +2,17 @@ const CategoryService = require("./CategoryService");
 //end code for images
 module.exports = {
   create: async (req, res) => {
-    //  console.log("catigory hit by sanjuuuuuu")
+      console.log("catigory hit by sanjuuuuuu",req.body)
     try {
       var data = { ...req.body,image:req.files };
-      // console.log(data, "hit by sanju");
+       console.log(data, "hit by sanju",data);
       CategoryService.create(data).then((result) => {
         if (result) {
           res.json({
             sucess: 200,
             message: "Category created succefully",
           });
-        } else {
+        } else { 
           res.json({
             sucess: 400,
             message: "Please provide correct information",
