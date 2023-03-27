@@ -3,12 +3,13 @@ module.exports = {
   create: (req, res) => {
         try {
           var data = {...req.body};  
+           data.cartStatus = "1"
           console.log(data, "create cart")       
           CartService.create(data).then((result) => {
             if (result) {
               res.json({
                 sucess: 200,
-                message: "User Loged in succefully",
+                message: "Cart createdsuccefully",
               });
             } else {
               res.json({
