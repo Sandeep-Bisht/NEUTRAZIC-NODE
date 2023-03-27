@@ -62,7 +62,7 @@ module.exports = {
           },
         },
       ],
-      line_items: productArray,
+      line_items: productArray,  
       mode: "payment",
       success_url: `${process.env.CLIENT_URL}/orderSuccess`,
       cancel_url: `${process.env.CLIENT_URL}/cart`,
@@ -70,6 +70,7 @@ module.exports = {
     try {
       if (session.success_url) {
         res.json({
+
           success: 200,
           url: session.url,
           message: "Ordered created succefully",
