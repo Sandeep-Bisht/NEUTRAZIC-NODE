@@ -25,7 +25,6 @@ const LoginSchema = new Schema({
   },
   userStatus:{
     type:String,
-    required:true,
   },
   organization:{
     type: String, 
