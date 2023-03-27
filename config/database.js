@@ -8,8 +8,8 @@
 //         useCreateIndex: true,
 //          useFindAndModify: true,
 //         auth: {
-//             "user":"NeutrazicAdmin",
-//             "password":"SOSh3AWDPC4499GTbYhxY8",  
+//             "user":"Nutrazic_Giks",
+//             "password":"Nutrazic1234z",  
 //           },
 //     })
 //     mongoose.connection.on('connected',()=>{
@@ -17,6 +17,10 @@
 //     })
 // }
 
+// live
+
+// "user":"NeutrazicAdmin",
+// "password":"SOSh3AWDPC4499GTbYhxY8", 
 
 const mongoose =require('mongoose')
 require('dotenv').config()
@@ -29,4 +33,4 @@ module.exports = function(){
     mongoose.connection.on('connected',()=>{
         console.log("Database is connected ")
     })
-} 
+}
