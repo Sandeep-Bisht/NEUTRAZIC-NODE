@@ -10,6 +10,10 @@ const CartSchema = new Schema({
     type: Array,
     default:[]
    },
+   cartStatus: {
+    type : String,
+    required: true
+   }
 });
 const model = mongoose.model("Cart", CartSchema);
 module.exports = model;

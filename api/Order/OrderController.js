@@ -14,11 +14,11 @@ module.exports = {
     const customer = await stripe.customers.create({
       metadata: {
         userid: req.body.userid,
-        cart : order,       
+        cart: order,
         customerName: req.body.username,
         customerNumber: req.body.mobile,
         customerEmail: req.body.email,
-        order_no : req.body.order_no,
+        order_no: req.body.order_no,
       },
     });
 
@@ -29,17 +29,20 @@ module.exports = {
           currency: "inr",
           product_data: {
             name: item.name,
-            // images : [item.image]
-            images: [
-              `http://arogyapath.org/_next/image?url=%2Fimages%2FAyurveda-Book.png&w=64&q=75`,
-            ],
+             images : [item.image]
+            // images: [
+            //   `http://arogyapath.org/_next/image?url=%2Fimages%2FAyurveda-Book.png&w=64&q=75`,
+            // ],
           },
           unit_amount: parseInt(item.singleprice * 100),
         },
         quantity: item.quantity,
       });
     });
-    console.log(productArray[0].price_data.product_data,"productArray productArray")
+    console.log(
+      productArray[0].price_data.product_data,
+      "productArray productArray"
+    );
 
     const session = await stripe.checkout.sessions.create({
       customer: customer.id,
@@ -67,6 +70,7 @@ module.exports = {
     try {
       if (session.success_url) {
         res.json({
+          
           success: 200,
           url: session.url,
           message: "Ordered created succefully",
@@ -99,7 +103,7 @@ module.exports = {
     const sig = req.headers["stripe-signature"];
     let eventType;
     let data;
-    
+
     if (endpointSecret) {
       try {
         event = stripe.webhooks.constructEvent(
@@ -107,9 +111,9 @@ module.exports = {
           sig,
           endpointSecret
         );
-         console.log("web hook verified");
+        console.log("web hook verified");
       } catch (err) {
-         console.log(`web hook failed : ${err.message}, err, ${err}`);
+        console.log(`web hook failed : ${err.message}, err, ${err}`);
         res.status(400).send(`Webhook Error: ${err.message}`);
         return;
       }
@@ -127,9 +131,8 @@ module.exports = {
         .then((customer) => {
           // console.log(customer, "customer");
           // console.log("data ", data);
-        
-          createOrder(customer, data);
 
+          createOrder(customer, data);
         })
         .catch((err) => console.log(err.message));
     }
@@ -190,26 +193,24 @@ module.exports = {
     }
   },
   updateOrder: (req, res, next) => {
-    const { _id,  } = req.body;
-    console.log(_id,"dataa",req.body)
-    let data = {...req.body}
+    const { _id } = req.body;
+    console.log(_id, "dataa", req.body);
+    let data = { ...req.body };
     try {
-      OrderService.updateOrder(_id, data).then(
-        (result) => {
-          // console.log(result);
-          if (result) {
-            res.status(200).json({
-              data: result,
-              msg: "Order status updated",
-            });
-          } else {
-            res.json({
-              error: 400,
-              message: "Data Not Found",
-            });
-          }
+      OrderService.updateOrder(_id, data).then((result) => {
+        // console.log(result);
+        if (result) {
+          res.status(200).json({
+            data: result,
+            msg: "Order status updated",
+          });
+        } else {
+          res.json({
+            error: 400,
+            message: "Data Not Found",
+          });
         }
-      );
+      });
     } catch (err) {
       console.log(err);
       res.json({
@@ -249,8 +250,8 @@ const createOrder = async (customer, data) => {
   //const Items = JSON.parse(customer.metadata.cart);
   let newOrder = {
     userid: customer.metadata.userid,
-    order : JSON.parse(customer.metadata.cart),
-    customerId: customer.id,    
+    order: JSON.parse(customer.metadata.cart),
+    customerId: customer.id,
     mobile: customer.metadata.customerNumber,
     username: customer.metadata.customerName,
     userEmail: customer.metadata.customerEmail,
@@ -258,41 +259,40 @@ const createOrder = async (customer, data) => {
     transaction_id: data.payment_intent,
     justification: "",
     delivery_time: "",
-    totalamount: (data.amount_subtotal/100),
-    actualamount: (data.amount_total/100),
+    totalamount: data.amount_subtotal / 100,
+    actualamount: data.amount_total / 100,
     addresstype: "Shipping",
     deliverytype: "Standard",
     address: data.shipping_details.address,
     payment_status: data.payment_status,
-    orderStatus :"Pending",
+    orderStatus: "Pending",
     order_no: customer.metadata.order_no,
   };
 
-  try {      
-       
+  try {
     CartService.find_by_id(newOrder.userid).then((result) => {
       // console.log("result from cart", result)
-      if (result && result.cartStatus == "Open") { 
-        let {_id, userid, order, cartStatus} = result; 
-        cartStatus = "Closed"
-        try{  
-          CartService.find_and_update(_id,userid,order,cartStatus).then((result) => {})
-          }
-           catch (err) {
-              console.log(err);
-              
+      if (result && result.cartStatus === "1") {
+        let { _id, userid, order, cartStatus } = result;
+        cartStatus = "0";
+        try {
+          CartService.find_and_update(_id, userid, order, cartStatus).then(
+            (result) => {
+              console.log("cart deleted",result)
             }
-             
-      } 
+          );
+        } catch (err) {
+          console.log(err);
+        }
+      }
     });
   } catch (err) {
-    console.log(err);   
+    console.log(err);
   }
 
-
   try {
-      OrderService.create(newOrder);    
-   } catch (error) {
+    OrderService.create(newOrder);
+  } catch (error) {
     console.log(error);
   }
 };
