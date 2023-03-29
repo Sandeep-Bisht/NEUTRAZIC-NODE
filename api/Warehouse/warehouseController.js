@@ -1,11 +1,9 @@
 const warehouseService = require("./warehouseService");
 module.exports = {
     create:  (req, res) =>{
-      console.log(req.body,"inside warehouse create")
         try {
             var data = { ...req.body };
             warehouseService.create(data).then((result) =>{
-              console.log(result,"result")
              if(result) {
                 res.json({
                     success: 200,
@@ -126,7 +124,6 @@ module.exports = {
         },
         find_and_delete:(req,res)=>{
           const {_id} = req.body
-           console.log(req.body,"here")
           try{  
             warehouseService.find_and_delete(_id).then((result) => {      
                 if (result.length>0) {  
