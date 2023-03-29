@@ -3,7 +3,6 @@ module.exports = {
   create: (req, res) => {
         try {
           var data = {...req.body};  
-          // console.log(data,"by sanju")       
           WishlistService.create(data).then((result) => {
             if (result) {
               res.json({
@@ -28,7 +27,6 @@ module.exports = {
   },  
   find_by_id:(req,res,next) =>{
     const{userid}=req.body
-    // console.log(userid)
     try {            
       WishlistService.find_by_id(userid).then((result) => {
         if (result.length>0) {  

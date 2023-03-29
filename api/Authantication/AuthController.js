@@ -58,11 +58,9 @@ module.exports = {
   },
   isuser: (req, res, next) => {
     try {
-      var data = {
-        username: req.body.username,
-      };
+      var data = { username: req.body.username };
       AuthService.isuser(data).then((result) => {
-        if (result) {          
+        if (result.length>0) {          
           bcrypt.compare(
             req.body.password,
             result[0].password,
@@ -81,12 +79,18 @@ module.exports = {
                 });
               }
               if (err) {
-                return res.status(401).json({
-                  msg: "Invalid Password",
+                return res.json({
+                  success:400,
+                  message: "Invalid Password",
                 });
               }
             }
-      )}         
+      )} else{
+        res.json({
+          success:401,
+          message:"invalid username and password",
+        })
+      }        
         
       });
       

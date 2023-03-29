@@ -42,7 +42,6 @@ module.exports = {
   find_all: (req, res, next) => {
     try {            
       ProductService.find_all().then((result) => {
-        // console.log(result)
         if (result) {  
           res.status(200).json({
             data: result,
@@ -91,7 +90,6 @@ module.exports = {
   },
   find_and_update:(req,res,next)=>{
       const {_id} =req.body;
-      console.log(req.body, "bodyyyyyy")
      
    
       const data={...req.body,image:req.files.image, otherImage:req.files.otherImage}
@@ -121,7 +119,6 @@ module.exports = {
     },
   find_and_delete:(req,res)=>{
     const {_id} = req.body
-    // console.log(_id,"here")
     try{  
       ProductService.find_and_delete(_id).then((result) => {      
           if (result.length>0) {  
