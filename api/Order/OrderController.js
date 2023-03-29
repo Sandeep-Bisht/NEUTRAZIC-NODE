@@ -10,7 +10,6 @@ const stripe = Stripe(process.env.STRIPE_KEY);
 module.exports = {
   create: async (req, res) => {
     const { order } = req.body;
-    // console.log("inside cretae ",req.body)
     const customer = await stripe.customers.create({
       metadata: {
         userid: req.body.userid,
@@ -97,7 +96,6 @@ module.exports = {
   // This is your Stripe CLI webhook secret for testing your endpoint locally.
 
   webhook: async (req, res) => {
-    console.log("web hook  trigger");
     let endpointSecret;
     //endpointSecret ="whsec_78ee2f6392677e2c2f3dd65d301271bc4026f84838c9b7d014343f6e097567cd";
     const sig = req.headers["stripe-signature"];
@@ -142,10 +140,8 @@ module.exports = {
   },
 
   find_all: (req, res, next) => {
-    // console.log("category hit")
     try {
       OrderService.find_all().then((result) => {
-        // console.log(result);
         if (result) {
           res.status(200).json({
             data: result,
@@ -168,10 +164,8 @@ module.exports = {
   },
   find_by_id: (req, res, next) => {
     const { userid } = req.body;
-    // console.log(req.body)
     try {
       OrderService.find_by_id(userid).then((result) => {
-        // console.log(result);
         if (result.length > 0) {
           res.status(200).json({
             data: result,
@@ -194,11 +188,9 @@ module.exports = {
   },
   updateOrder: (req, res, next) => {
     const { _id } = req.body;
-    console.log(_id, "dataa", req.body);
     let data = { ...req.body };
     try {
       OrderService.updateOrder(_id, data).then((result) => {
-        // console.log(result);
         if (result) {
           res.status(200).json({
             data: result,
@@ -221,7 +213,6 @@ module.exports = {
   },
   find_and_delete: (req, res) => {
     const { _id } = req.body;
-    // console.log(_id,"here")
     try {
       OrderService.find_and_delete(_id).then((result) => {
         if (result.length > 0) {
@@ -271,7 +262,6 @@ const createOrder = async (customer, data) => {
 
   try {
     CartService.find_by_id(newOrder.userid).then((result) => {
-      // console.log("result from cart", result)
       if (result && result.cartStatus === "1") {
         let { _id, userid, order, cartStatus } = result;
         cartStatus = "0";

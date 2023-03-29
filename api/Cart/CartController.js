@@ -4,7 +4,6 @@ module.exports = {
         try {
           var data = {...req.body};  
            data.cartStatus = "1"
-          console.log(data, "create cart")       
           CartService.create(data).then((result) => {
             if (result) {
               res.json({
@@ -32,7 +31,6 @@ module.exports = {
     try {           
        
       CartService.find_by_id(userid).then((result) => {
-        // console.log("result from cart", result)
         if (result.length>0) {  
           res.status(200).json({
             data: result,
@@ -82,7 +80,6 @@ module.exports = {
   },
   find_and_delete:(req,res)=>{
     const {_id} = req.body
-    console.log(_id,"here")
     try{  
       CartService.find_and_delete(_id).then((result) => {      
           if (result && result.length>0) {  

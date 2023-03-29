@@ -11,7 +11,6 @@ const stripe = Stripe(process.env.MHA_STRIPE_KEY);
 module.exports = {
   create: async (req, res) => {
     const { order } = req.body;
-     console.log("inside cretae mha",order, req.body)
     const customer = await stripe.customers.create({
       metadata: {
         user_id: req.body.userid,
@@ -44,7 +43,6 @@ module.exports = {
         quantity: item.quantity,
       });
     });
-    // console.log(productArray[0],"productArray productArray")
 
     const session = await stripe.checkout.sessions.create({
       customer: customer.id,
@@ -129,8 +127,6 @@ module.exports = {
       stripe.customers
         .retrieve(data.customer)
         .then((customer) => {
-          //  console.log(customer, "customer");
-          //  console.log("data ", data);
            updateOrder(customer, data)       
         
 
@@ -158,7 +154,6 @@ const updateOrder = async (customer, data) => {
   }
 
   let url = `http://13.126.72.50:8282/o/mha-headless/commerce/update-order-payment/?orderId=${id}&status=${status}&userId=${userId}&accountId=${accountId}&companyId=${companyId}&groupId=${groupId}`;
-console.log("url", url)
   axios.post(url, payload,  {
     headers: {
       Authorization: 'Bearer ' + userToken
@@ -199,7 +194,6 @@ const createOrder = async (customer, data) => {
   try {      
        
     CartService.find_by_id(newOrder.userid).then((result) => {
-      // console.log("result from cart", result)
       if (result && result.cartStatus == "Open") { 
         let {_id, userid, order, cartStatus} = result; 
         cartStatus = "Closed"
