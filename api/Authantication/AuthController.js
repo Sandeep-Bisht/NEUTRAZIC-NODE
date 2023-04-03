@@ -7,7 +7,7 @@ module.exports = {
     bcrypt.hash(password, 10, (error, hash) => {
       if (error) {
         res.status(500).json({
-          msg: "internal Server Error",
+          msg: "internal Server Error Create",
         });
       } else {
         try {
@@ -58,45 +58,57 @@ module.exports = {
   },
   isuser: (req, res, next) => {
     try {
-      var data = {
-        username: req.body.username,
-      };
+      var data = { username: req.body.username };
       AuthService.isuser(data).then((result) => {
-        if (result) {          
-          bcrypt.compare(
-            req.body.password,
-            result[0].password,
-            (err, response) => {              
-              if (response) {
-                var token = jwt.sign(
-                  {
-                    username: req.body.username,
-                  },
-                  "this is my medzone key",
-                  { expiresIn: "1h" }
-                )
-                res.status(200).json({
-                  token: token,                  
-                  ...result[0]._doc
-                });
+        if (result && result.length>0) { 
+          if(result[0].userStatus==="Activate") 
+          {
+            bcrypt.compare(
+              req.body.password,
+              result[0].password,
+              (err, response) => {              
+                if (response) {
+                  var token = jwt.sign(
+                    {
+                      username: req.body.username,
+                    },
+                    "this is my medzone key",
+                    { expiresIn: "1h" }
+                  )
+                  res.status(200).json({
+                    token: token,                  
+                    ...result[0]._doc
+                  });
+                }
+                else{
+                  return res.json({
+                    success:401,
+                    messege: "Invalid Password",
+                  });
+                }
               }
-              if (err) {
-                return res.status(401).json({
-                  msg: "Invalid Password",
-                });
-              }
-            }
-      )}         
+        )
+          }    
+          else{
+        res.json({
+          success:402,
+          messege:"user is De-Activated"
+        })
+      }         
         
-      });
-      
-    } catch (err) {
+    }else{
       res.json({
-        sucess: 400,
+        success: 400,
         message: "Please provide correct information",
       });
-    }
-  },
+    }})
+  }catch(error){
+    res.json({
+      success:400,
+      message:"Please provide correct information",
+    })
+  }
+},
   
   find_all: (req, res, next) => {
     try {            
@@ -126,7 +138,6 @@ module.exports = {
     const{_id}=req.body
     try {            
       AuthService.find_by_id(_id).then((result) => {
-        console.log(result)
         if (result) {  
           res.status(200).json({
             success : 200,
@@ -152,18 +163,9 @@ module.exports = {
 
   find_and_update : (req,res) => {
     const {_id} = req.body;
-    const { password } = req.body;
-    bcrypt.hash(password, 10, (error, hash) => {
-      if (error) {
-        res.status(500).json({
-          msg: "internal Server Error",
-        });
-        console.log(error);
-      } else {
         try {
           var data = {
             username: req.body.username,
-            password: hash,
             email: req.body.email,
             phonenumber:req.body.phonenumber,
             role:req.body.role,
@@ -173,12 +175,12 @@ module.exports = {
           AuthService.find_and_update(_id,data).then((result) => {
             if (result) {              
               res.json({
-                sucess: 200,
+                success: 200,
                 message: "User Updated succefully",
               });
             } else {
               res.json({
-                sucess: 400,
+                success: 400,
                 message: "Please provide correct",
               });
             }
@@ -186,13 +188,11 @@ module.exports = {
         } catch (err) {
           console.log(err);
           res.json({
-            sucess: 400,
+            success: 400,
             message: "Please provide correct information",
           });
         }
-      }
-    });
-  },
+      },
 
   find_and_delete:(req,res)=>{
     const {_id} = req.body

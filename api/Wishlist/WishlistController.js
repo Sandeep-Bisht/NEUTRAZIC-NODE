@@ -55,9 +55,10 @@ module.exports = {
   find_and_update:(req,res,next)=>{
   const{_id,userid,order}=req.body
   try{  
-  WishlistService.find_and_update(_id,userid,order).then((result) => {      
-      if (result.length>0) {  
-        res.status(200).json({
+  WishlistService.find_and_update(_id,userid,order).then((result) => {  
+    console.log(result,"result");    
+      if (result) {  
+        res.json({
           data: result,
           msg:'data found'
         });
