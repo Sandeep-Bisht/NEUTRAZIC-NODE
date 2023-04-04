@@ -164,12 +164,7 @@ module.exports = {
     const { _id } = req.body;
     try {
       AuthService.find_by_id(_id).then((result) => {
-<<<<<<< HEAD
-        console.log(result);
-        if (result) {
-=======
         if (result) {  
->>>>>>> 7417c890b8e5d9e29023f449cdf7af2c3e81cd19
           res.status(200).json({
             success: 200,
             data: result,
@@ -191,21 +186,8 @@ module.exports = {
     }
   },
 
-<<<<<<< HEAD
-  find_and_update: (req, res) => {
-    const { _id } = req.body;
-    const { password } = req.body;
-    bcrypt.hash(password, 10, (error, hash) => {
-      if (error) {
-        res.status(500).json({
-          msg: "internal Server Error",
-        });
-        console.log(error);
-      } else {
-=======
   find_and_update : (req,res) => {
     const {_id} = req.body;
->>>>>>> 7417c890b8e5d9e29023f449cdf7af2c3e81cd19
         try {
           var data = {
             username: req.body.username,
