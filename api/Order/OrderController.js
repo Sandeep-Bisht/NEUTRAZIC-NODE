@@ -29,9 +29,6 @@ module.exports = {
           product_data: {
             name: item.name,
              images : [item.image]
-            // images: [
-            //   `http://arogyapath.org/_next/image?url=%2Fimages%2FAyurveda-Book.png&w=64&q=75`,
-            // ],
           },
           unit_amount: parseInt(item.singleprice * 100),
         },
@@ -40,7 +37,7 @@ module.exports = {
     });
     console.log(
       productArray[0].price_data.product_data,
-      "productArray productArray"
+      "productArray productArray", process.env.CLIENT_URL
     );
 
     const session = await stripe.checkout.sessions.create({
@@ -67,6 +64,8 @@ module.exports = {
       cancel_url: `${process.env.CLIENT_URL}/cart`,
     });
     try {
+      console.log("insede try", session.success_url);
+
       if (session.success_url) {
         res.json({
           
@@ -81,6 +80,8 @@ module.exports = {
         });
       }
     } catch (error) {
+      console.log("insede catvh", session.success_url);
+
       console.log(error);
       res.json({
         sucess: 400,
