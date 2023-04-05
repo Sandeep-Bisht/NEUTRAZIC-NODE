@@ -9,6 +9,7 @@ const stripe = Stripe(process.env.STRIPE_KEY);
 //end code for images
 module.exports = {
   create: async (req, res) => {
+    console.log("inside create", req.body)
     const { order } = req.body;
     const customer = await stripe.customers.create({
       metadata: {
@@ -28,7 +29,7 @@ module.exports = {
           currency: "inr",
           product_data: {
             name: item.name,
-             images : [item.image]
+             //images : [item.image]
           },
           unit_amount: parseInt(item.singleprice * 100),
         },
@@ -97,6 +98,7 @@ module.exports = {
   // This is your Stripe CLI webhook secret for testing your endpoint locally.
 
   webhook: async (req, res) => {
+    console.log("webhook trigger")
     let endpointSecret;
     //endpointSecret ="whsec_78ee2f6392677e2c2f3dd65d301271bc4026f84838c9b7d014343f6e097567cd";
     const sig = req.headers["stripe-signature"];
@@ -128,8 +130,8 @@ module.exports = {
       stripe.customers
         .retrieve(data.customer)
         .then((customer) => {
-          // console.log(customer, "customer");
-          // console.log("data ", data);
+           console.log(customer, "customer");
+          console.log("data ", data);
 
           createOrder(customer, data);
         })
@@ -240,6 +242,7 @@ module.exports = {
 
 const createOrder = async (customer, data) => {
   //const Items = JSON.parse(customer.metadata.cart);
+  console.log("inside create order 1111")
   let newOrder = {
     userid: customer.metadata.userid,
     order: JSON.parse(customer.metadata.cart),
@@ -263,27 +266,31 @@ const createOrder = async (customer, data) => {
 
   try {
     CartService.find_by_id(newOrder.userid).then((result) => {
-      if (result && result.cartStatus === "1") {
-        let { _id, userid, order, cartStatus } = result;
-        cartStatus = "0";
+      console.log("inside cart service", result )
+      if (result && result[0].cartStatus == '1') {       
+       result[0].cartStatus = '0';
+       console.log("resultttttttttt", result)
         try {
-          CartService.find_and_update(_id, userid, order, cartStatus).then(
+          CartService.find_and_update(result[0]._id, result).then(
             (result) => {
-              console.log("cart deleted",result)
+              console.log("cart updated",result)              
             }
           );
+          OrderService.create(newOrder).then((result) => {
+            if(result){
+              console.log("order created successfully");
+            }else{
+              OrderService.create(newOrder)
+            }
+          })
         } catch (err) {
           console.log(err);
         }
+      }else{
+        console.log("inside else");
       }
     });
   } catch (err) {
     console.log(err);
-  }
-
-  try {
-    OrderService.create(newOrder);
-  } catch (error) {
-    console.log(error);
   }
 };
