@@ -35,9 +35,7 @@ module.exports = {
                     pass: "Nutrazik@123",
                   },
                 });
-                console.log("inside transporter");             
-
-               
+                console.log("inside transporter");
 
                 const mailOptions = {
                   from: "admin@nutrazik.com",
@@ -56,8 +54,8 @@ module.exports = {
                   });
                 } catch (error) {
                   console.error(error);
-                }               
-              } 
+                }
+              }
             })
             .catch((err) => {
               if (err.code === 11000) {
@@ -83,60 +81,56 @@ module.exports = {
       }
     });
   },
-  isuser: (req, res, next) => {
+  isuser: (req, res) => {
+    console.log("is user", req.body);
     try {
       var data = { username: req.body.username };
       AuthService.isuser(data).then((result) => {
-        if (result && result.length>0) { 
-          if(result[0].userStatus==="Activate") 
-          {
-            bcrypt.compare(
-              req.body.password,
-              result[0].password,
-              (err, response) => {              
-                if (response) {
-                  var token = jwt.sign(
-                    {
-                      username: req.body.username,
-                    },
-                    "this is my medzone key",
-                    { expiresIn: "1h" }
-                  )
-                  res.status(200).json({
-                    token: token,                  
-                    ...result[0]._doc
-                  });
-                }
-                else{
-                  return res.json({
-                    success:401,
-                    messege: "Invalid Password",
-                  });
-                }
+        console.log(result, "result");
+        if (
+          result &&
+          result.length > 0 &&
+          result[0].userStatus === "Activate"
+        ) {
+          bcrypt.compare(
+            req.body.password,
+            result[0].password,
+            (err, response) => {
+              if (response) {
+                var token = jwt.sign(
+                  {
+                    username: req.body.username,
+                  },
+                  "this is my medzone key",
+                  { expiresIn: "1h" }
+                );
+                res.status(200).json({
+                  token: token,
+                  ...result[0]._doc,
+                });
+              } else{
+                res.json({
+                  success :403,
+                  error: "Invalid User"
+                })
               }
-        )
-          }    
-          else{
-        res.json({
-          success:402,
-          messege:"user is De-Activated"
-        })
-      }         
-        
-    }else{
-      res.json({
-        success: 400,
-        message: "Please provide correct information",
+            } 
+          );
+        }else {
+          res.json({
+            success : 403,
+            error : "No user found"
+          })
+        }
       });
-    }})
-  }catch(error){
-    res.json({
-      success:400,
-      message:"Please provide correct information",
-    })
-  }
-},
-  
+    } catch (error) {
+      res.json({
+        success: 403,
+        error: "Please provide correct information",
+      });
+    }
+  },
+
   find_all: (req, res, next) => {
     try {
       AuthService.find_all().then((result) => {
@@ -164,7 +158,7 @@ module.exports = {
     const { _id } = req.body;
     try {
       AuthService.find_by_id(_id).then((result) => {
-        if (result) {  
+        if (result) {
           res.status(200).json({
             success: 200,
             data: result,
@@ -186,38 +180,38 @@ module.exports = {
     }
   },
 
-  find_and_update : (req,res) => {
-    const {_id} = req.body;
-        try {
-          var data = {
-            username: req.body.username,
-            email: req.body.email,
-            phonenumber: req.body.phonenumber,
-            role: req.body.role,
-            userStatus: req.body.userStatus,
-            organization: req.body.organization,
-          };
-          AuthService.find_and_update(_id, data).then((result) => {
-            if (result) {
-              res.json({
-                success: 200,
-                message: "User Updated succefully",
-              });
-            } else {
-              res.json({
-                success: 400,
-                message: "Please provide correct",
-              });
-            }
+  find_and_update: (req, res) => {
+    const { _id } = req.body;
+    try {
+      var data = {
+        username: req.body.username,
+        email: req.body.email,
+        phonenumber: req.body.phonenumber,
+        role: req.body.role,
+        userStatus: req.body.userStatus,
+        organization: req.body.organization,
+      };
+      AuthService.find_and_update(_id, data).then((result) => {
+        if (result) {
+          res.json({
+            success: 200,
+            message: "User Updated succefully",
           });
-        } catch (err) {
-          console.log(err);
+        } else {
           res.json({
             success: 400,
-            message: "Please provide correct information",
+            message: "Please provide correct",
           });
         }
-      },
+      });
+    } catch (err) {
+      console.log(err);
+      res.json({
+        success: 400,
+        message: "Please provide correct information",
+      });
+    }
+  },
 
   find_and_delete: (req, res) => {
     const { _id } = req.body;
