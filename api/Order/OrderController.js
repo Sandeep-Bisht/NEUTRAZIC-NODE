@@ -1,5 +1,6 @@
 const OrderService = require("./OrderService");
 const CartService = require("../Cart/CartService");
+const nodemailer = require("nodemailer");
 require("dotenv").config();
 const router = require("express").Router();
 const express = require("express");
@@ -68,8 +69,7 @@ module.exports = {
       console.log("insede try", session.success_url);
 
       if (session.success_url) {
-        res.json({
-          
+        res.json({          
           success: 200,
           url: session.url,
           message: "Ordered created succefully",
@@ -266,19 +266,41 @@ const createOrder = async (customer, data) => {
 
   try {
     CartService.find_by_id(newOrder.userid).then((result) => {
-      console.log("inside cart service", result )
-      if (result && result[0].cartStatus == '1') {       
-       result[0].cartStatus = '0';
-       console.log("resultttttttttt", result)
+      if (result) {              
         try {
-          CartService.find_and_update(result[0]._id, result).then(
+          CartService.find_and_delete(result[0]._id).then(
             (result) => {
-              console.log("cart updated",result)              
             }
           );
           OrderService.create(newOrder).then((result) => {
             if(result){
               console.log("order created successfully");
+
+              // Send email to user
+              const transporter = nodemailer.createTransport({
+                host: "smtppro.zoho.com",
+                port: 587,
+                auth: {
+                  user: "admin@nutrazik.com",
+                  pass: "Nutrazik@123",
+                },
+              });
+
+              const mailOptions = {
+                from: "admin@nutrazik.com",
+                to: newOrder.userEmail,
+                subject: "Order has been successfully placed",
+                text: `Hi ${newOrder.username},\n\nYour order has been placed successfully with order id ${newOrder.order_no} .\n\n
+                Thanks for choosing Nutrazik.\n\n Best regards,
+        Nutrazik\n+91-7500872014`,
+              };
+              try {
+                transporter.sendMail(mailOptions);
+                console.log("Email sent to user!");                
+              } catch (error) {
+                console.error(error);
+              }
+
             }else{
               OrderService.create(newOrder)
             }

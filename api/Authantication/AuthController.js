@@ -110,7 +110,7 @@ module.exports = {
                 });
               } else{
                 res.json({
-                  success :401,
+                  success :403,
                   error: "Invalid User"
                 })
               }
@@ -125,9 +125,8 @@ module.exports = {
       });
     } catch (error) {
       res.json({
-        success: 400,
-        message: "Please provide correct information",
-        error,
+        success: 403,
+        error: "Please provide correct information",
       });
     }
   },
