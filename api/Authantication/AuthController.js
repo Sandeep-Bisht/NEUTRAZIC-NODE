@@ -5,7 +5,6 @@ const jwt = require("jsonwebtoken");
 
 module.exports = {
   create: (req, res) => {
-    console.log("inside create");
     const { password } = req.body;
     bcrypt.hash(password, 10, (error, hash) => {
       if (error) {
@@ -35,8 +34,6 @@ module.exports = {
                     pass: "Nutrazik@123",
                   },
                 });
-                console.log("inside transporter");
-
                 const mailOptions = {
                   from: "admin@nutrazik.com",
                   to: data.email,
@@ -47,7 +44,6 @@ module.exports = {
                 };
                 try {
                   transporter.sendMail(mailOptions);
-                  console.log("Email sent to user!");
                   res.json({
                     sucess: 200,
                     message: "User Created succefully",
@@ -82,7 +78,6 @@ module.exports = {
     });
   },
   isuser: (req, res) => {
-    console.log("is user", req.body);
     try {
       var data = { username: req.body.username };
       AuthService.isuser(data).then((result) => {

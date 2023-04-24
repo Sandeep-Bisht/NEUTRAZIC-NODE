@@ -10,7 +10,6 @@ const stripe = Stripe(process.env.STRIPE_KEY);
 //end code for images
 module.exports = {
   create: async (req, res) => {
-    console.log("inside create", req.body)
     const { order } = req.body;
     const customer = await stripe.customers.create({
       metadata: {
@@ -66,8 +65,6 @@ module.exports = {
       cancel_url: `${process.env.CLIENT_URL}/cart`,
     });
     try {
-      console.log("insede try", session.success_url);
-
       if (session.success_url) {
         res.json({          
           success: 200,

@@ -13,6 +13,7 @@ const MhaOrderRouter=require('./api/Mha/mhaOrderRouting')
 const WishlistRouter=require('./api/Wishlist/WishlistRouting')
 const WarehouseRouter = require('./api/Warehouse/warehouseRouting')
 const BlogsRouter = require('./api/Blogs/blogRouting')
+const SubscribedRouter = require('./api/Subscribed/SubscribedRouting')
 //const ShippingRouter = require('./api/Shipping/ShippingRouting')
 
 const cors = require('cors');
@@ -33,6 +34,7 @@ app.use('//api/mhaOrder',MhaOrderRouter);
 app.use('//api/wishlist',WishlistRouter);
 app.use('//api/warehouse',WarehouseRouter);
 app.use('//api/blogs',BlogsRouter)
+app.use('//api/subscribed',SubscribedRouter);
 db();
 app.use(express.json())
 
