@@ -109,7 +109,6 @@ module.exports = {
           sig,
           endpointSecret
         );
-        //  console.log("web hook verified");
       } catch (err) {
          console.log(`web hook failed : ${err.message}, err, ${err}`);
         res.status(400).send(`Webhook Error: ${err.message}`);

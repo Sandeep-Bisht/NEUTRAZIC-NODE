@@ -54,7 +54,6 @@ module.exports = {
   const{_id,userid,order}=req.body
   try{  
   WishlistService.find_and_update(_id,userid,order).then((result) => {  
-    console.log(result,"result");    
       if (result) {  
         res.json({
           data: result,
