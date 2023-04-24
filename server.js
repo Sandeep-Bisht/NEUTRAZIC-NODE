@@ -20,19 +20,19 @@ require('dotenv').config()
 app.use(bodyParser.json({ limit: "100mb", extended: true, parameterLimit: 50000 }));
 app.use(bodyParser.urlencoded({ limit: "100mb", extended: true, parameterLimit: 50000 }))
 app.use(cors({ origin: true }));
-app.use('/public', express.static('public'));
-app.use('/api/auth',LoginRouter);
-app.use('/api/product',ProductRouter);
-app.use('/api/cart',CartRouter);
-app.use('/api/category',CategoryRouter);
-app.use('/api/subcategory',SubCategoryRouter);
-app.use('/api/manufacture',ManufactureRouter);
-app.use('/api/order',OrderRouter);
-app.use('/api/mhaOrder',MhaOrderRouter);
-// app.use('/api/shipping_details',ShippingRouter)
-app.use('/api/wishlist',WishlistRouter);
-app.use('/api/warehouse',WarehouseRouter);
-app.use('/api/blogs',BlogsRouter)
+app.use('//public', express.static('public'));
+app.use('//api/auth',LoginRouter);
+app.use('//api/product',ProductRouter);
+app.use('//api/cart',CartRouter);
+app.use('//api/category',CategoryRouter);
+app.use('//api/subcategory',SubCategoryRouter);
+app.use('//api/manufacture',ManufactureRouter);
+app.use('//api/order',OrderRouter);
+app.use('//api/mhaOrder',MhaOrderRouter);
+// app.use('//api/shipping_details',ShippingRouter)
+app.use('//api/wishlist',WishlistRouter);
+app.use('//api/warehouse',WarehouseRouter);
+app.use('//api/blogs',BlogsRouter)
 db();
 app.use(express.json())
 
