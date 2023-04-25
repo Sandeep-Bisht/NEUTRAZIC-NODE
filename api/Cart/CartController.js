@@ -2,8 +2,7 @@ const CartService = require("./CartService");
 module.exports = {
   create: (req, res) => {
         try {
-          var data = {...req.body};  
-           data.cartStatus = "1"
+          var data = {...req.body};
           CartService.create(data).then((result) => {
             if (result) {
               res.json({
