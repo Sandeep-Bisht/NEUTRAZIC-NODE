@@ -46,7 +46,7 @@ module.exports = {
                   transporter.sendMail(mailOptions);
                   res.json({
                     sucess: 200,
-                    message: "User Created succefully",
+                    message: "User Created successfully",
                   });
                 } catch (error) {
                   console.error(error);
@@ -106,7 +106,7 @@ module.exports = {
               } else {
                 res.json({
                   success: 403,
-                  error: "Invalid User",
+                  error: "Username or password is not correct",
                 });
               }
             }
@@ -121,7 +121,7 @@ module.exports = {
     } catch (error) {
       res.json({
         success: 403,
-        error: "Please provide correct information",
+        error: "Username or password is not correct",
       });
     }
   },
