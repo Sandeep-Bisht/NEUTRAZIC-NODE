@@ -103,19 +103,19 @@ module.exports = {
                   token: token,
                   ...result[0]._doc,
                 });
-              } else{
+              } else {
                 res.json({
-                  success :403,
-                  error: "Invalid User"
-                })
+                  success: 403,
+                  error: "Invalid User",
+                });
               }
-            } 
+            }
           );
-        }else {
+        } else {
           res.json({
-            success : 403,
-            error : "No user found"
-          })
+            success: 403,
+            error: "No user found",
+          });
         }
       });
     } catch (error) {

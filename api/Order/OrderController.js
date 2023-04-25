@@ -10,11 +10,12 @@ const stripe = Stripe(process.env.STRIPE_KEY);
 //end code for images
 module.exports = {
   create: async (req, res) => {
+    console.log("inside create order");
     const { order } = req.body;
     const customer = await stripe.customers.create({
       metadata: {
         userid: req.body.userid,
-        cart: order,
+        //cart: order,
         customerName: req.body.username,
         customerNumber: req.body.mobile,
         customerEmail: req.body.email,
@@ -29,17 +30,13 @@ module.exports = {
           currency: "inr",
           product_data: {
             name: item.name,
-             //images : [item.image]
+            //images : [item.image]
           },
           unit_amount: parseInt(item.singleprice * 100),
         },
         quantity: item.quantity,
       });
     });
-    console.log(
-      productArray[0].price_data.product_data,
-      "productArray productArray", process.env.CLIENT_URL
-    );
 
     const session = await stripe.checkout.sessions.create({
       customer: customer.id,
@@ -66,7 +63,7 @@ module.exports = {
     });
     try {
       if (session.success_url) {
-        res.json({          
+        res.json({
           success: 200,
           url: session.url,
           message: "Ordered created succefully",
@@ -86,8 +83,6 @@ module.exports = {
         message: "Please provide correct information",
       });
     }
-
-    //   OrderService.create(data).then((result) => {
   },
 
   // stripe webhook
@@ -95,7 +90,7 @@ module.exports = {
   // This is your Stripe CLI webhook secret for testing your endpoint locally.
 
   webhook: async (req, res) => {
-    console.log("webhook trigger")
+    console.log("webhook trigger");
     let endpointSecret;
     //endpointSecret ="whsec_78ee2f6392677e2c2f3dd65d301271bc4026f84838c9b7d014343f6e097567cd";
     const sig = req.headers["stripe-signature"];
@@ -127,9 +122,6 @@ module.exports = {
       stripe.customers
         .retrieve(data.customer)
         .then((customer) => {
-           console.log(customer, "customer");
-          console.log("data ", data);
-
           createOrder(customer, data);
         })
         .catch((err) => console.log(err.message));
@@ -239,10 +231,10 @@ module.exports = {
 
 const createOrder = async (customer, data) => {
   //const Items = JSON.parse(customer.metadata.cart);
-  console.log("inside create order 1111")
+  console.log(data,"inside create order 1111", customer);
   let newOrder = {
     userid: customer.metadata.userid,
-    order: JSON.parse(customer.metadata.cart),
+    //order: JSON.parse(customer.metadata.cart),
     customerId: customer.id,
     mobile: customer.metadata.customerNumber,
     username: customer.metadata.customerName,
@@ -263,16 +255,17 @@ const createOrder = async (customer, data) => {
 
   try {
     CartService.find_by_id(newOrder.userid).then((result) => {
-      if (result) {              
+      if (result) {
+        console.log(result[0]._id, "main thish ")
+        CartService.find_and_delete(result[0]._id).then((result) => {
+          console.log("cart deleted succfully");
+        });
+        newOrder.order = result;
+        console.log("inisede about to certee", newOrder)
         try {
-          CartService.find_and_delete(result[0]._id).then(
-            (result) => {
-            }
-          );
           OrderService.create(newOrder).then((result) => {
-            if(result){
-              console.log("order created successfully");
-
+            if (result) {
+              console.log("order created successfully", result, "result");
               // Send email to user
               const transporter = nodemailer.createTransport({
                 host: "smtppro.zoho.com",
@@ -293,19 +286,20 @@ const createOrder = async (customer, data) => {
               };
               try {
                 transporter.sendMail(mailOptions);
-                console.log("Email sent to user!");                
+                console.log("Email sent to user!");              
+              
               } catch (error) {
                 console.error(error);
               }
-
-            }else{
-              OrderService.create(newOrder)
+            } else {
+              OrderService.create(newOrder);
             }
-          })
+          });         
+         
         } catch (err) {
           console.log(err);
         }
-      }else{
+      } else {
         console.log("inside else");
       }
     });
