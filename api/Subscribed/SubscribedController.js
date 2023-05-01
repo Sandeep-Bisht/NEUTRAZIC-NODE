@@ -62,8 +62,8 @@ module.exports = {
             transporter.sendMail(mailOptions);
             console.log("email send")
             res.json({
-              sucess: 200,
-              message: "We have shared a susbscibe link to verify your email. Please verify within a hour It will expire after a hour.",
+              success: 200,
+              message: "Subscription link has been sent to your email.",
             });
           } catch (error) {
             console.error(error);

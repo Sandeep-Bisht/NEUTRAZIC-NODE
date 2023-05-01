@@ -30,7 +30,7 @@ const ProductSchema = new Schema({
     type: String,
   },
   quantity: {
-    type: String,
+    type: Number,
   },
   dollerMrp: {
     type: String,

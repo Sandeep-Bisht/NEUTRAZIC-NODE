@@ -1,5 +1,8 @@
 const OrderService = require("./OrderService");
 const CartService = require("../Cart/CartService");
+const ProductService = require("../Products/ProductService");
+const ProductModal = require('../Products/ProductModal');
+const { ObjectId } = require('mongodb');
 const nodemailer = require("nodemailer");
 require("dotenv").config();
 const router = require("express").Router();
@@ -249,11 +252,26 @@ const createOrder = async (customer, data) => {
   };
 
   try {
-    CartService.find_by_id(newOrder.userid).then((result) => {
+    CartService.find_by_id(newOrder.userid).then(async (result) => {
       if (result) {
         CartService.find_and_delete(result[0]._id).then((result) => {
         });
         newOrder.order = result;
+        try {
+          for (let item of result[0].order) {
+            const productId = item.productid;
+            const purchasedQty = parseInt(item.quantity);
+            await ProductModal.findOneAndUpdate(
+              { _id: ObjectId(productId) },
+              { $inc: { quantity: -purchasedQty } },
+              { new: true }
+            );
+          }
+          console.log("item reduced");
+        } catch (err) {
+          console.log(err);
+        }
+       
         try {
           OrderService.create(newOrder).then((result) => {
             if (result) {

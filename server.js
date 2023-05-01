@@ -13,6 +13,7 @@ const WishlistRouter=require('./api/Wishlist/WishlistRouting')
 const WarehouseRouter = require('./api/Warehouse/warehouseRouting')
 const BlogsRouter = require('./api/Blogs/blogRouting')
 const SubscribedRouter = require('./api/Subscribed/SubscribedRouting')
+const ForgetPasswordRooter = require('./api/ForgetPassword/ForgetPasswordRouting')
 //const ShippingRouter = require('./api/Shipping/ShippingRouting')
 
 const cors = require('cors');
@@ -24,6 +25,7 @@ app.use('//public', express.static('public'));
 app.use('//api/auth',LoginRouter);
 app.use('//api/product',ProductRouter);
 app.use('//api/cart',CartRouter);
+app.use('//api/otp', ForgetPasswordRooter);
 app.use('//api/category',CategoryRouter);
 app.use('//api/subcategory',SubCategoryRouter);
 app.use('//api/manufacture',ManufactureRouter);
