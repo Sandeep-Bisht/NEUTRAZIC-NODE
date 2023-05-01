@@ -32,7 +32,7 @@ module.exports = {
         {
           email: email,
         },
-        process.env.SECRET_KEY,
+        "this is my medzone key",
         { expiresIn: "1h" }
       );
       tokenModalModule.create({
@@ -40,7 +40,6 @@ module.exports = {
       }).then((result) => {
         if (result) {
           // Send email to user
-          // console.log(result,"inside the result")
           const transporter = nodemailer.createTransport({
             host: "smtppro.zoho.com",
             port: 587,

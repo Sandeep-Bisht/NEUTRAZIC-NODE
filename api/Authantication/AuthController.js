@@ -46,7 +46,7 @@ module.exports = {
                   transporter.sendMail(mailOptions);
                   res.json({
                     sucess: 200,
-                    message: "User Created successfully",
+                    message: "User Created succefully",
                   });
                 } catch (error) {
                   console.error(error);
@@ -81,7 +81,6 @@ module.exports = {
     try {
       var data = { username: req.body.username };
       AuthService.isuser(data).then((result) => {
-        console.log(result, "result");
         if (
           result &&
           result.length > 0 &&
@@ -103,25 +102,25 @@ module.exports = {
                   token: token,
                   ...result[0]._doc,
                 });
-              } else {
+              } else{
                 res.json({
-                  success: 403,
-                  error: "Username or password is not correct",
-                });
+                  success :403,
+                  error: "Username or password is invalid"
+                })
               }
-            }
+            } 
           );
-        } else {
+        }else {
           res.json({
-            success: 403,
-            error: "No user found",
-          });
+            success : 403,
+            error : "No user found"
+          })
         }
       });
     } catch (error) {
       res.json({
         success: 403,
-        error: "Username or password is not correct",
+        error: "Username and password is invalid",
       });
     }
   },
@@ -207,6 +206,50 @@ module.exports = {
       });
     }
   },
+  find_by_id_update:(req,res)=>{
+    const { _id } = req.body;
+    const { password } = req.body;
+    bcrypt.hash(password, 10, (error, hash) => {
+      if (error) {
+        res.status(500).json({
+          msg: "internal Server Error Create",
+        });
+      }
+      else{
+        try {
+          var data = {
+            username: req.body.username,
+            email: req.body.email,
+            phonenumber: req.body.phonenumber,
+            role: req.body.role,
+            userStatus: req.body.userStatus,
+            password:hash,
+            organization: req.body.organization,
+          };
+          AuthService.find_and_update(_id, data).then((result) => {
+            if (result) {
+              res.json({
+                success: 200,
+                message: "User Updated succefully",
+              });
+            } else {
+              res.json({
+                success: 400,
+                message: "Please provide correct",
+              });
+            }
+          });
+        } catch (err) {
+          console.log(err);
+          res.json({
+            success: 400,
+            message: "Please provide correct information",
+          });
+        }
+      }
+    
+  })
+},
 
   find_and_delete: (req, res) => {
     const { _id } = req.body;

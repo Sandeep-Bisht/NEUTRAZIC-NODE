@@ -10,7 +10,6 @@ const stripe = Stripe(process.env.STRIPE_KEY);
 //end code for images
 module.exports = {
   create: async (req, res) => {
-    console.log("inside create order");
     const { order } = req.body;
     const customer = await stripe.customers.create({
       metadata: {
@@ -75,9 +74,6 @@ module.exports = {
         });
       }
     } catch (error) {
-      console.log("insede catvh", session.success_url);
-
-      console.log(error);
       res.json({
         sucess: 400,
         message: "Please provide correct information",
@@ -231,7 +227,6 @@ module.exports = {
 
 const createOrder = async (customer, data) => {
   //const Items = JSON.parse(customer.metadata.cart);
-  console.log(data,"inside create order 1111", customer);
   let newOrder = {
     userid: customer.metadata.userid,
     //order: JSON.parse(customer.metadata.cart),
@@ -256,16 +251,12 @@ const createOrder = async (customer, data) => {
   try {
     CartService.find_by_id(newOrder.userid).then((result) => {
       if (result) {
-        console.log(result[0]._id, "main thish ")
         CartService.find_and_delete(result[0]._id).then((result) => {
-          console.log("cart deleted succfully");
         });
         newOrder.order = result;
-        console.log("inisede about to certee", newOrder)
         try {
           OrderService.create(newOrder).then((result) => {
             if (result) {
-              console.log("order created successfully", result, "result");
               // Send email to user
               const transporter = nodemailer.createTransport({
                 host: "smtppro.zoho.com",
