@@ -32,7 +32,7 @@ module.exports = {
         {
           email: email,
         },
-        process.env.SECRET_KEY,
+        "this is my medzone key",
         { expiresIn: "1h" }
       );
       tokenModalModule.create({
