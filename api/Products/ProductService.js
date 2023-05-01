@@ -14,5 +14,8 @@ find_and_update:(_id,data)=>{
     },
 find_and_delete:(_id)=>{
     return ProductModal.findByIdAndRemove({_id})
-}
+},
+// update_quantity:(id, quantity)=>{
+//     return ProductModal.updateOne({id}, {quantity});
+// }
 }
