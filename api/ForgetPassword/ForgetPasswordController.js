@@ -14,7 +14,6 @@ module.exports = {
      else{
      const otp = Math.floor(100000 + Math.random() * 900000);
      otpModalModule.create({otp}).then((result)=>{
-        console.log(result,"inside the otp")
         if(result)
         {
           res.json({
@@ -49,7 +48,6 @@ module.exports = {
           setTimeout(() => {
             otpModalModule.deleteOne({ otp: otp }).then((result) => {
               if (result) {
-                console.log("OTP deleted after 5 minutes");
               }
             }).catch((err) => {
               console.log(err);
@@ -90,12 +88,7 @@ module.exports = {
                otpModalModule.deleteOne({ otp: otp },(err,userOtp)=>{
                 if(err){
                     console.log(err);
-                }
-                if(userOtp)
-                {
-                    console.log("delete otp");
-                }
-                
+                }                
                })
             }  
             else{

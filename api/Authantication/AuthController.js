@@ -81,7 +81,6 @@ module.exports = {
     try {
       var data = { username: req.body.username };
       AuthService.isuser(data).then((result) => {
-        console.log(result, "result");
         if (
           result &&
           result.length > 0 &&
