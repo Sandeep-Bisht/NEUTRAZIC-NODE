@@ -180,13 +180,43 @@ module.exports = {
   updateOrder: (req, res, next) => {
     const { _id } = req.body;
     let data = { ...req.body };
+    console.log("helo order details")
     try {
       OrderService.updateOrder(_id, data).then((result) => {
         if (result) {
-          res.status(200).json({
-            data: result,
-            msg: "Order status updated",
+          console.log(result,"data of neworder details");
+          // res.status(200).json({
+          //   data: result,
+          //   msg: "Order status updated",
+          // });
+          const transporter = nodemailer.createTransport({
+            host: "smtppro.zoho.com",
+            port: 587,
+            auth: {
+              user: "admin@nutrazik.com",
+              pass: "Nutrazik@123",
+            },
           });
+          const mailOptions = {
+            from: "admin@nutrazik.com",
+            to: result.userEmail,
+            subject: "Update on Your Request in Progress",
+            text: `<p>Dear ${result.username}</p>
+            <p>The email provides an update to the recipient regarding the progress of their request. 
+            <pre>It assures them that their request is being worked on and the team is making efforts 
+            to complete it as soon as possible. The email also invites the recipient to reach out if 
+            they have any questions or concerns.</pre>
+            `,
+          };
+          try {
+            transporter.sendMail(mailOptions);
+            res.json({
+              sucess: 200,
+              message: "User Created succefully",
+            });
+          } catch (error) {
+            console.error(error);
+          }
         } else {
           res.json({
             error: 400,
