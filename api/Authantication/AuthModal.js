@@ -28,7 +28,10 @@ const LoginSchema = new Schema({
   },
   organization:{
     type: String, 
-    }
+    },
+  manufacturer:{
+    type:String,
+  },
 });
 const model = mongoose.model("Login", LoginSchema);
 module.exports = model;

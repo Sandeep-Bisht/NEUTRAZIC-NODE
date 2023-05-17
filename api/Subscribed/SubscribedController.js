@@ -103,7 +103,7 @@ module.exports = {
         });
       }
 
-      jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
+      jwt.verify(token, "this is my medzone key", (err, decoded) => {
         if (err) {
           // token not found
           res.json({

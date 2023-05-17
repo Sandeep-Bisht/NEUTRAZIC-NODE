@@ -184,7 +184,6 @@ module.exports = {
     try {
       OrderService.updateOrder(_id, data).then((result) => {
         if (result) {
-          console.log(result,"data of neworder details");
           // res.status(200).json({
           //   data: result,
           //   msg: "Order status updated",

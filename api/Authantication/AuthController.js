@@ -21,9 +21,11 @@ module.exports = {
             role: req.body.role,
             userStatus: req.body.userStatus,
             organization: req.body.organization,
+            manufacturer:req.body.manufacturer,
           };
           AuthService.create(data)
             .then((result) => {
+              console.log(result,"result of authantication user")
               if (result) {
                 // Send email to user
                 const transporter = nodemailer.createTransport({
