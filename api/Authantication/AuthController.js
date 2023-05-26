@@ -78,10 +78,13 @@ module.exports = {
       }
     });
   },
-  isuser: (req, res) => {
+  isuser: async(req, res) => {
     try {
-      var data = { username: req.body.username };
-      AuthService.isuser(data).then((result) => {
+      const user = await AuthService.findOne({
+        $or: [{ email: req.body.username }, { username: req.body.username }],
+      });
+      // var data = { username: req.body.username };
+      AuthService.isuser(user).then((result) => {
         if (
           result &&
           result.length > 0 &&

@@ -40,28 +40,60 @@ module.exports = {
         }
   },
   find_all: (req, res, next) => {
-    try {            
-      ProductService.find_all().then((result) => {
-        if (result) {  
-          res.status(200).json({
-            data: result,
-            msg:'data found'
-          });
+    if(req.query._page && req.query._limit)
+    {
+      const page=Number(req.query._page) || 1;
+        const limit=Number(req.query._limit);
+        let skip=(page-1)*limit;
+        try {            
+          ProductService.find_all().skip(skip).limit(limit).then((result) => {
+            if (result.length>0 || result.length<6) {
+              res.status(200).json({
+                data: result,
+                msg:'data found',
                
-        } else {
+              });
+                   
+            } else {
+              res.json({
+                success: 400,
+                message: "Data Not Found",
+              });
+            }
+          });
+        } catch (err) {
+          console.log(err);
           res.json({
             success: 400,
-            message: "Data Not Found",
+            message: "Please provide correct information",
           });
         }
-      });
-    } catch (err) {
-      console.log(err);
-      res.json({
-        success: 400,
-        message: "Please provide correct information",
-      });
     }
+    else{
+      try {            
+        ProductService.find_all().then((result) => {
+          if (result) {
+            res.status(200).json({
+              data: result,
+              msg:'data found',
+             
+            });
+                 
+          } else {
+            res.json({
+              success: 400,
+              message: "Data Not Found",
+            });
+          }
+        });
+      } catch (err) {
+        console.log(err);
+        res.json({
+          success: 400,
+          message: "Please provide correct information",
+        });
+      }
+    }   
   },
   find_by_id:(req,res,next) =>{
     const{_id}=req.body

@@ -180,7 +180,6 @@ module.exports = {
   updateOrder: (req, res, next) => {
     const { _id } = req.body;
     let data = { ...req.body };
-    console.log("helo order details")
     try {
       OrderService.updateOrder(_id, data).then((result) => {
         if (result) {
@@ -200,7 +199,7 @@ module.exports = {
             from: "admin@nutrazik.com",
             to: result.userEmail,
             subject: "Update on Your Request in Progress",
-            text: `<p>Dear ${result.username}</p>
+            html: `<p>Dear ${result.username}</p>
             <p>The email provides an update to the recipient regarding the progress of their request. 
             <pre>It assures them that their request is being worked on and the team is making efforts 
             to complete it as soon as possible. The email also invites the recipient to reach out if 
@@ -296,7 +295,6 @@ const createOrder = async (customer, data) => {
               { new: true }
             );
           }
-          console.log("item reduced");
         } catch (err) {
           console.log(err);
         }
@@ -324,7 +322,6 @@ const createOrder = async (customer, data) => {
               };
               try {
                 transporter.sendMail(mailOptions);
-                console.log("Email sent to user!");              
               
               } catch (error) {
                 console.error(error);
