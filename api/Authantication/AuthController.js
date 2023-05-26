@@ -25,7 +25,6 @@ module.exports = {
           };
           AuthService.create(data)
             .then((result) => {
-              console.log(result,"result of authantication user")
               if (result) {
                 // Send email to user
                 const transporter = nodemailer.createTransport({
