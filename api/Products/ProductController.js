@@ -43,7 +43,7 @@ module.exports = {
     if(req.query._page && req.query._limit)
     {
       const page=Number(req.query._page) || 1;
-        const limit=Number(req.query._limit) || 5;
+        const limit=Number(req.query._limit);
         let skip=(page-1)*limit;
         try {            
           ProductService.find_all().skip(skip).limit(limit).then((result) => {
