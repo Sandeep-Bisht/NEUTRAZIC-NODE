@@ -20,5 +20,8 @@ find_and_delete:(_id)=>{
 },
 find_by_id_update:(_id,data)=>{
     return AuthModal.findByIdAndUpdate({_id},data)
+},
+findOne:(query)=>{
+    return AuthModal.findOne(query);
 }
 }
