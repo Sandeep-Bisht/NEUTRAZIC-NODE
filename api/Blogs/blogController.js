@@ -88,16 +88,16 @@ module.exports = {
     },
     find_and_update:(req,res,next)=>{
   
-        const{_id}=req.body;
-        var featuredImages;   
+        const{_id,title,description,content}=req.body;
+        const data={
+          _id:_id,
+          title:title,
+          description:description,
+          content:content,
+        }   
         if(req.files[0]){
-        featuredImages = req.files    
-        }
-        else{
-          featuredImages = req.body.image
-        }
-    
-        const data={...req.body,featuredImage:featuredImages} 
+          data.featuredImage = req.files;     
+        } 
         try{  
             blogService.find_and_update(_id,data).then((result) => {      
             if (result) {  

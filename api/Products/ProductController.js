@@ -121,10 +121,28 @@ module.exports = {
     }
   },
   find_and_update:(req,res,next)=>{
-      const {_id} =req.body;
-     
-   
-      const data={...req.body,image:req.files.image, otherImage:req.files.otherImage}
+    const {_id,name,description,warehouse,category,subcategory,quantity,inrMrp,dollerMrp,inrDiscount,dollerDiscount,manufacturer,type} =req.body;
+    const data={
+      _id:_id,
+      name:name,
+      description:description,
+      warehouse:warehouse,
+      category:category,
+      subcategory:subcategory,
+      quantity:quantity,
+      inrMrp:inrMrp,
+      dollerMrp:dollerMrp,
+      inrDiscount:inrDiscount,
+      dollerDiscount:dollerDiscount,
+      manufacturer:manufacturer,
+      type:type,
+    }   
+    if(req.files.image){
+      data.image = req.files.image;     
+    } 
+    if(req.files.image){
+      data.otherImage = req.files.otherImage;     
+    }
     try{  
       ProductService.find_and_update(_id,data).then((result) => {      
         if (result) {  
