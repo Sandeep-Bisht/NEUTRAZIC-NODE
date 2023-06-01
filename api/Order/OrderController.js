@@ -201,9 +201,9 @@ module.exports = {
             subject: "Update on Your Request in Progress",
             html: `<p>Dear ${result.username}</p>
             <p>The email provides an update to the recipient regarding the progress of their request. 
-            <pre>It assures them that their request is being worked on and the team is making efforts 
+            <p>It assures them that their request is being worked on and the team is making efforts 
             to complete it as soon as possible. The email also invites the recipient to reach out if 
-            they have any questions or concerns.</pre>
+            they have any questions or concerns.</p>
             `,
           };
           try {

@@ -73,16 +73,16 @@ const SubCategoryService = require("./SubCategoryService");
       }
     },
     find_and_update:(req,res,next)=>{
-      const{_id}=req.body
-      var images   
+      const{_id,name,description,category}=req.body;
+      const data={
+        _id:_id,
+        name:name,
+        description:description,
+        category:category,
+      }   
       if(req.files[0]){
-        images = req.files    
-      }
-      else{
-        images = req.body.image
-      }
-  
-      const data={...req.body,image:images} 
+        data.images = req.files;     
+      }  
       try{  
         SubCategoryService.find_and_update(_id,data).then((result) => {      
           if (result) {  
