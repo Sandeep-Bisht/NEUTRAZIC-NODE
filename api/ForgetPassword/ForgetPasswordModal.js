@@ -7,5 +7,5 @@ const OtpSchema = new Schema({
     unique:true,
   },
 });
-const model = mongoose.model("Otp", OtpSchema);
+const model = mongoose.model("forgetPasswordOtp", OtpSchema);
 module.exports = model;
