@@ -78,53 +78,44 @@ module.exports = {
       }
     });
   },
-  isuser: async(req, res) => {
+  isuser: async (req, res) => {
+    console.log(req.body, "check the data of body");
     try {
       const user = await AuthService.findOne({
         $or: [{ email: req.body.username }, { username: req.body.username }],
       });
-      // var data = { username: req.body.username };
-      AuthService.isuser(user).then((result) => {
-        if (
-          result &&
-          result.length > 0 &&
-          result[0].userStatus === "Activate"
-        ) {
-          bcrypt.compare(
-            req.body.password,
-            result[0].password,
-            (err, response) => {
-              if (response) {
-                var token = jwt.sign(
-                  {
-                    username: req.body.username,
-                  },
-                  "this is my medzone key",
-                  { expiresIn: "1h" }
-                );
-                res.status(200).json({
-                  token: token,
-                  ...result[0]._doc,
-                });
-              } else{
-                res.json({
-                  success :403,
-                  error: "Username or password is invalid"
-                })
-              }
-            } 
-          );
-        }else {
-          res.json({
-            success : 403,
-            error : "No user found"
-          })
-        }
-      });
+      console.log(user,"user of isuser")
+      if (user && user.userStatus === "Activate") {
+        bcrypt.compare(req.body.password, user.password, (err, response) => {
+          if (response) {
+            var token = jwt.sign(
+              {
+                username: req.body.username,
+              },
+              "this is my medzone key",
+              { expiresIn: "1h" }
+            );
+            res.status(200).json({
+              token: token,
+              ...user._doc,
+            });
+          } else {
+            res.json({
+              success: 403,
+              error: "Username or password is invalid",
+            });
+          }
+        });
+      } else {
+        res.json({
+          success: 403,
+          error: "No user found",
+        });
+      }
     } catch (error) {
       res.json({
         success: 403,
-        error: "Username and password is invalid",
+        error: "Username and password are invalid",
       });
     }
   },
