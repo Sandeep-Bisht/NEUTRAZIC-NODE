@@ -32,6 +32,12 @@ const ProductSchema = new Schema({
   quantity: {
     type: Number,
   },
+  reorderQuantity:{
+    type: Number,
+  },
+  maximumOrder:{
+    type:Number,
+  },
   dollerMrp: {
     type: String,
   },

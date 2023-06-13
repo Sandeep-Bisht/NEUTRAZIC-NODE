@@ -121,7 +121,7 @@ module.exports = {
     }
   },
   find_and_update:(req,res,next)=>{
-    const {_id,name,description,warehouse,category,subcategory,quantity,inrMrp,dollerMrp,inrDiscount,dollerDiscount,manufacturer,type} =req.body;
+    const {_id,name,description,warehouse,category,subcategory,quantity,reorderQuantity,maximumOrder,inrMrp,dollerMrp,inrDiscount,dollerDiscount,manufacturer,type} =req.body;
     const data={
       _id:_id,
       name:name,
@@ -130,6 +130,8 @@ module.exports = {
       category:category,
       subcategory:subcategory,
       quantity:quantity,
+      reorderQuantity:reorderQuantity,
+      maximumOrder:maximumOrder,
       inrMrp:inrMrp,
       dollerMrp:dollerMrp,
       inrDiscount:inrDiscount,
