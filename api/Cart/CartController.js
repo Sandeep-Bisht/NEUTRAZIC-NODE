@@ -64,6 +64,7 @@ module.exports = {
       } else {
         res.json({
           error: 400,
+          data: result,
           message: "Data Not Found",
         });
       }
