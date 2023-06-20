@@ -45,22 +45,41 @@ module.exports = {
       const page=Number(req.query._page) || 1;
         const limit=Number(req.query._limit);
         let skip=(page-1)*limit;
-        try {            
-          ProductService.find_all().skip(skip).limit(limit).then((result) => {
-            if (result.length>0 || result.length<6) {
-              res.status(200).json({
-                data: result,
-                msg:'data found',
-               
-              });
-                   
-            } else {
-              res.json({
-                success: 400,
-                message: "Data Not Found",
-              });
-            }
-          });
+        try {   
+          if(req.query._order)
+          {
+            ProductService.find_all().skip(skip).sort({ inrDiscount: req.query._order === 'ascending' ? 1 : -1 }).limit(limit).then((result) => {
+              if (result.length>0 || result.length<6) {
+                res.status(200).json({
+                  data: result,
+                  msg:'data found',
+                 
+                });
+              } else {
+                res.json({
+                  success: 400,
+                  message: "Data Not Found",
+                });
+              }
+            });
+          }  
+          else{
+            ProductService.find_all().skip(skip).limit(limit).then((result) => {
+              if (result.length>0 || result.length<6) {
+                res.status(200).json({
+                  data: result,
+                  msg:'data found',
+                 
+                });
+                     
+              } else {
+                res.json({
+                  success: 400,
+                  message: "Data Not Found",
+                });
+              }
+            });
+          }       
         } catch (err) {
           console.log(err);
           res.json({
