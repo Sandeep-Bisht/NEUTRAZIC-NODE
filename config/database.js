@@ -9,8 +9,10 @@ module.exports = function(){
         useCreateIndex: true,
          useFindAndModify: true,
         auth: {
-            "user":"NeutrazicAdmin",
-            "password":"SOSh3AWDPC4499GTbYhxY8",  
+            // "user":"NeutrazicAdmin",
+            // "password":"SOSh3AWDPC4499GTbYhxY8",  
+            "user":"Nutrazic_Giks",
+            "password":"Nutrazic1234",  
           },
     })
     mongoose.connection.on('connected',()=>{
